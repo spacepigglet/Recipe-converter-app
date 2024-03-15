@@ -3,4 +3,12 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="edit_text1">Ingredient</string>
+    <string name="edit_text2">Amount</string>
+    <string name="edit_text3">New amount</string>
+    <string name="add_button_text">Add to recipe</string>
+    <string name="next_button_text">Next</string>
+    <string name="edit_title">Recipe title</string>
+    <string name="new_recipe_button_text">Create new recipe</string>
+    <string name="title_add_ingredients">Add Ingredients</string>
 </resources>

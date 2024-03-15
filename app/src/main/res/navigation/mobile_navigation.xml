@@ -9,8 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.example.recipe_converter_app.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_HomeFragment_to_AddIngredientsFragment"
+            app:destination="@id/navigation_add_ingredients" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.recipe_converter_app.ui.dashboard.DashboardFragment"
@@ -22,4 +25,14 @@
         android:name="com.example.recipe_converter_app.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_add_ingredients"
+        android:name="com.example.recipe_converter_app.ui.home.AddIngredientsFragment"
+        android:label="@string/title_add_ingredients"
+        tools:layout="@layout/fragment_notifications">
+        <action
+            android:id="@+id/action_AddIngredientsFragment_to_HomeFragment"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
 </navigation>

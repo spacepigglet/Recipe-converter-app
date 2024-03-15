@@ -5,39 +5,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.recipe_converter_app.databinding.FragmentAddIngredientsBinding;
 
-import com.example.recipe_converter_app.R;
-import com.example.recipe_converter_app.databinding.FragmentHomeBinding;
-
-public class HomeFragment extends Fragment {
-
-    private FragmentHomeBinding binding;
+public class AddIngredientsFragment extends Fragment {
+    private FragmentAddIngredientsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentAddIngredientsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        //required for back button to work
 
-
-        final EditText editText = binding.editRecipeTitle;
-
-        binding.newRecipeButton.setOnClickListener(view -> {
-            homeViewModel.setText(editText.getText().toString());
-            NavHostFragment.findNavController(HomeFragment.this)
-                    .navigate(R.id.action_HomeFragment_to_AddIngredientsFragment);
-
-        });
-
+        final EditText editIngredient = binding.editIngredient;
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
@@ -47,5 +34,4 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }
