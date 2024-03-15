@@ -11,4 +11,6 @@
     <string name="edit_title">Recipe title</string>
     <string name="new_recipe_button_text">Create new recipe</string>
     <string name="title_add_ingredients">Add Ingredients</string>
+    <string name="recipe">"Recipe: "</string>
+    <string name="ingredients_added_so_far">Ingredients added so far:\n</string>
 </resources>

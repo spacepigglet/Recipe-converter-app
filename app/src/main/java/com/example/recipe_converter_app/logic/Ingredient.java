@@ -1,11 +1,13 @@
 package com.example.recipe_converter_app.logic;
 
+import androidx.annotation.NonNull;
+
 public class Ingredient {
     private final Unit unit;
-    private final int amount;
+    private final float amount;
     private final String name;
 
-    public Ingredient(String name, int amount, Unit unit) {
+    public Ingredient(String name, float amount, Unit unit) {
         this.unit = unit;
         this.amount = amount;
         this.name = name;
@@ -15,7 +17,7 @@ public class Ingredient {
         return unit;
     }
 
-    public int getAmount() {
+    public float getAmount() {
         return amount;
     }
 
@@ -24,5 +26,11 @@ public class Ingredient {
     }
     public String formatDetails() {
         return amount + " " + unit + " " +  name;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return formatDetails();
     }
 }
