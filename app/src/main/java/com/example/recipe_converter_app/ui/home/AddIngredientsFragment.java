@@ -72,8 +72,8 @@ public class AddIngredientsFragment extends Fragment {
     }
 
     private void displayTitle() {
-        String title = viewModel.getText();
-        String textToDisplay = getString(R.string.recipe) + title;
+        String title = viewModel.getRecipe().getRecipeName();
+        String textToDisplay = getString(R.string.recipe) + " " + title ;
         binding.recipeTitle.setText(textToDisplay);
     }
 

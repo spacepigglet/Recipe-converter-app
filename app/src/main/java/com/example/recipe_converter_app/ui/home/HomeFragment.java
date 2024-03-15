@@ -38,7 +38,9 @@ public class HomeFragment extends Fragment {
         binding.newRecipeButton.setOnClickListener(view -> {
             String title = binding.editRecipeTitle.getText().toString();
             if(!title.equals("")){
-                viewModel.setText(editText.getText().toString());
+
+                //viewModel.setText(title);
+                viewModel.newRecipe(title);
                 NavHostFragment.findNavController(HomeFragment.this)
                         .navigate(R.id.action_HomeFragment_to_AddIngredientsFragment);
             }else{

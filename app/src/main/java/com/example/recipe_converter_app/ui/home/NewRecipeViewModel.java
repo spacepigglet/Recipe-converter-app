@@ -1,5 +1,7 @@
 package com.example.recipe_converter_app.ui.home;
 
+import android.view.ActionMode;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -8,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.example.recipe_converter_app.logic.Ingredient;
+import com.example.recipe_converter_app.logic.Recipe;
 import com.example.recipe_converter_app.logic.Unit;
 
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ public class NewRecipeViewModel extends ViewModel {
     private MutableLiveData<String> mText;
     private ArrayList<Ingredient> recipeIngredients;
     private Ingredient currentIngredient;
+    Recipe recipe;
     //private final LiveData<List<Ingredient>> recipeIngredients;
     /*private final MutableLiveData<Set<Filter>> filters = new MutableLiveData<>();
 
@@ -57,7 +61,16 @@ public class NewRecipeViewModel extends ViewModel {
     public boolean addIngredient(String ingredientToAdd, float amount, Unit unit){
         Ingredient ingredient = new Ingredient(ingredientToAdd, amount, unit);
         currentIngredient = ingredient;
-        return recipeIngredients.add(ingredient);
+
+        return recipe.addIngredient(ingredient);
     }
     public Ingredient getCurrentIngredient(){return currentIngredient;}
+
+    public void newRecipe(String title){
+        recipe = new Recipe(title);
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
 }
