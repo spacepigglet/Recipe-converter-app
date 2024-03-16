@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.recipe_converter_app.R;
 import com.example.recipe_converter_app.databinding.FragmentAddIngredientsBinding;
@@ -21,7 +22,7 @@ import com.example.recipe_converter_app.logic.Unit;
 import java.util.List;
 
 public class AddIngredientsFragment extends Fragment {
-    NewRecipeViewModel viewModel;
+    private NewRecipeViewModel viewModel;
     private FragmentAddIngredientsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -38,6 +39,17 @@ public class AddIngredientsFragment extends Fragment {
         displayTitle();
         binding.addButton.setOnClickListener(view -> addIngredient());
         binding.unitsSpinner.setAdapter(new ArrayAdapter<Unit>(getContext(), layout.simple_spinner_item, Unit.values()));
+        binding.nextButton.setOnClickListener(view -> {
+            //if an ingredient is not chosen (radiobutton)
+            //if(...){
+            //Toast
+            //} else
+            //boolean success = viewModel.generateRecipe()
+            NavHostFragment.findNavController(AddIngredientsFragment.this)
+                        .navigate(R.id.action_AddIngredientsFragment_to_ChooseBaseIngredientFragment);
+
+
+        });
 
         //final EditText editIngredient = binding.editIngredient;
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);

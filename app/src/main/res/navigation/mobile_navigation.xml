@@ -29,9 +29,19 @@
         android:id="@+id/navigation_add_ingredients"
         android:name="com.example.recipe_converter_app.ui.home.AddIngredientsFragment"
         android:label="@string/title_add_ingredients"
-        tools:layout="@layout/fragment_notifications">
+        tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_AddIngredientsFragment_to_HomeFragment"
+            android:id="@+id/action_AddIngredientsFragment_to_ChooseBaseIngredientFragment"
+            app:destination="@id/navigation_choose_base_ingredients" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_choose_base_ingredients"
+        android:name="com.example.recipe_converter_app.ui.home.ChooseBaseIngredientFragment"
+        android:label="@string/choose_base_ingredient"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_ChooseBaseIngredientFragment_to_HomeFragment"
             app:destination="@id/navigation_home" />
     </fragment>
 

@@ -1,5 +1,6 @@
 package com.example.recipe_converter_app.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe {
@@ -9,6 +10,7 @@ public class Recipe {
 
     public Recipe(String name) {
         this.name = name;
+        ingredients = new ArrayList<>();
     }
 
     public boolean addIngredient(Ingredient ingredient) {

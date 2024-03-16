@@ -13,4 +13,7 @@
     <string name="title_add_ingredients">Add Ingredients</string>
     <string name="recipe">"Recipe: "</string>
     <string name="ingredients_added_so_far">Ingredients added so far:\n</string>
+    <string name="choose_base_ingredient">Choose Base Ingredient</string>
+    <string name="generate_recipe">Generate recipe!</string>
+    <string name="new_amount">New amount of chosen ingredient</string>
 </resources>
