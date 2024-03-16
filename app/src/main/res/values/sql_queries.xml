@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_tables">
+        "CREATE TABLE IF NOT EXISTS Recipes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        instructions TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS Ingredients (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS RecipeIngredients (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        recipe_id INTEGER NOT NULL,
+        ingredient_id INTEGER NOT NULL,
+        amount REAL NOT NULL,
+        unit TEXT NOT NULL,
+        FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
+        FOREIGN KEY (ingredient_id) REFERENCES Ingredients(id)
+        );"
+    </string>
+
+</resources>

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.recipe_converter_app.logic.Ingredient;
 import com.example.recipe_converter_app.logic.Recipe;
+import com.example.recipe_converter_app.logic.RecipeCalculator;
 import com.example.recipe_converter_app.logic.Unit;
 
 import java.util.ArrayList;
@@ -21,7 +22,9 @@ public class NewRecipeViewModel extends ViewModel {
     private MutableLiveData<String> mText;
     private ArrayList<Ingredient> recipeIngredients;
     private Ingredient currentIngredient;
-    Recipe recipe;
+    private Recipe recipe;
+    private float newBaseIngredientAmount;
+    private float originalBaseIngredientAmount;
     //private final LiveData<List<Ingredient>> recipeIngredients;
     /*private final MutableLiveData<Set<Filter>> filters = new MutableLiveData<>();
 
@@ -72,5 +75,23 @@ public class NewRecipeViewModel extends ViewModel {
 
     public Recipe getRecipe() {
         return recipe;
+    }
+
+    public void generateRecipe() {
+        RecipeCalculator recipeCalculator = new RecipeCalculator(originalBaseIngredientAmount, newBaseIngredientAmount);
+
+
+
+    }
+
+    public float getNewBaseIngredientAmount() {
+        return newBaseIngredientAmount;
+    }
+    public void setOriginalwBaseIngredientAmount(float originalBaseIngredientAmount) {
+        this.originalBaseIngredientAmount = originalBaseIngredientAmount;
+    }
+
+    public void setNewBaseIngredientAmount(float newBaseIngredientAmount) {
+        this.newBaseIngredientAmount = newBaseIngredientAmount;
     }
 }

@@ -5,7 +5,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="edit_text1">Ingredient</string>
     <string name="edit_text2">Amount</string>
-    <string name="edit_text3">New amount</string>
+    <string name="new_amount">New amount</string>
     <string name="add_button_text">Add to recipe</string>
     <string name="next_button_text">Next</string>
     <string name="edit_title">Recipe title</string>
@@ -15,5 +15,5 @@
     <string name="ingredients_added_so_far">Ingredients added so far:\n</string>
     <string name="choose_base_ingredient">Choose Base Ingredient</string>
     <string name="generate_recipe">Generate recipe!</string>
-    <string name="new_amount">New amount of chosen ingredient</string>
+    <string name="new_amount_instruction">Enter the amount of %s to base the new recipe on:</string>
 </resources>

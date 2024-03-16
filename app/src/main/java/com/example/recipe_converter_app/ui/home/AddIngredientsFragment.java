@@ -40,11 +40,7 @@ public class AddIngredientsFragment extends Fragment {
         binding.addButton.setOnClickListener(view -> addIngredient());
         binding.unitsSpinner.setAdapter(new ArrayAdapter<Unit>(getContext(), layout.simple_spinner_item, Unit.values()));
         binding.nextButton.setOnClickListener(view -> {
-            //if an ingredient is not chosen (radiobutton)
-            //if(...){
-            //Toast
-            //} else
-            //boolean success = viewModel.generateRecipe()
+
             NavHostFragment.findNavController(AddIngredientsFragment.this)
                         .navigate(R.id.action_AddIngredientsFragment_to_ChooseBaseIngredientFragment);
 

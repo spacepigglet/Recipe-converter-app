@@ -1,6 +1,7 @@
 package com.example.recipe_converter_app.logic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Recipe {
@@ -27,5 +28,18 @@ public class Recipe {
 
     public String getRecipeName() {
         return name;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return Collections.unmodifiableList(ingredients);
+    }
+    public Ingredient getIngredient(String name) {
+        for (Ingredient i:ingredients) {
+            if(i.getName().equals(name)){
+                return i;
+            }
+        }
+        //no ingredient by that name found in the recipe
+        return null;
     }
 }
