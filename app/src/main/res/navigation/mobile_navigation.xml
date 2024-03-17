@@ -15,10 +15,10 @@
             app:destination="@id/navigation_add_ingredients" />
     </fragment>
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.recipe_converter_app.ui.dashboard.DashboardFragment"
+        android:id="@+id/navigation_my_recipes"
+        android:name="com.example.recipe_converter_app.ui.dashboard.MyRecipesFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_my_recipes" />
 
     <fragment
         android:id="@+id/navigation_notifications"

@@ -1,15 +1,8 @@
 package com.example.recipe_converter_app.ui.home;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.view.ActionMode;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.example.recipe_converter_app.logic.DatabaseHelper;
@@ -19,7 +12,6 @@ import com.example.recipe_converter_app.logic.RecipeCalculator;
 import com.example.recipe_converter_app.logic.Unit;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class NewRecipeViewModel extends ViewModel {
 
@@ -96,7 +88,7 @@ public class NewRecipeViewModel extends ViewModel {
     public float getNewBaseIngredientAmount() {
         return newBaseIngredientAmount;
     }
-    public void setOriginalwBaseIngredientAmount(float originalBaseIngredientAmount) {
+    public void setOriginalBaseIngredientAmount(float originalBaseIngredientAmount) {
         this.originalBaseIngredientAmount = originalBaseIngredientAmount;
     }
 

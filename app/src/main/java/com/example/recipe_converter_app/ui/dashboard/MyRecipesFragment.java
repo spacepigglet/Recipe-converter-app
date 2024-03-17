@@ -4,25 +4,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.recipe_converter_app.databinding.FragmentDashboardBinding;
+import com.example.recipe_converter_app.databinding.FragmentMyRecipesBinding;
 
-public class DashboardFragment extends Fragment {
+public class MyRecipesFragment extends Fragment {
 
-    private FragmentDashboardBinding binding;
-    DashboardViewModel dashboardViewModel;
+    private FragmentMyRecipesBinding binding;
+    MyRecipesViewModel myRecipesViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        myRecipesViewModel =
+                new ViewModelProvider(this).get(MyRecipesViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentMyRecipesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
 

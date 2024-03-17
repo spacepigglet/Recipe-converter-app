@@ -45,7 +45,7 @@ public class ChooseBaseIngredientFragment extends Fragment {
         }else{
             //have to set newBaseIngredientAmount before generating recipe
             viewModel.setNewBaseIngredientAmount(Float.parseFloat(newAmountStr));
-            viewModel.generateRecipe();
+            viewModel.generateRecipe(getContext());
             Toast.makeText(getContext(), "New recipe generated!\nSee\"My Recipes\n", Toast.LENGTH_SHORT).show();
             NavHostFragment.findNavController(ChooseBaseIngredientFragment.this)
                     .navigate(R.id.action_ChooseBaseIngredientFragment_to_HomeFragment);
@@ -81,7 +81,7 @@ public class ChooseBaseIngredientFragment extends Fragment {
                     String selectedIngredientName = checkedRadioButton.getText().toString();
                     Ingredient ingredient = viewModel.getRecipe().getIngredient(selectedIngredientName);
                     if(ingredient != null){
-                        viewModel.setOriginalwBaseIngredientAmount(ingredient.getAmount());
+                        viewModel.setOriginalBaseIngredientAmount(ingredient.getAmount());
                         binding.instruction.setVisibility(View.VISIBLE);
                         binding.newAmountLayout.setVisibility(View.VISIBLE);
                         binding.generateRecipeButton.setVisibility(View.VISIBLE);

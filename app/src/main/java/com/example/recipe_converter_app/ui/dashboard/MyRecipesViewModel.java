@@ -10,11 +10,11 @@ import com.example.recipe_converter_app.logic.DatabaseHelper;
 
 import java.util.TreeMap;
 
-public class DashboardViewModel extends ViewModel {
+public class MyRecipesViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public MyRecipesViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is dashboard fragment");
     }
