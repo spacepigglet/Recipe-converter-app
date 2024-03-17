@@ -2,11 +2,15 @@ package com.example.recipe_converter_app.logic;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "recipesdb.sqlite";
@@ -35,7 +39,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void getRecipeFromDatabase(String recipeName) {
     }
-    public void getAllRecipesFromDatabase() {
+    public TreeMap<Long, String> getAllRecipeNamesFromDatabase() {
+        SQLiteDatabase database = this.getReadableDatabase();
+        TreeMap<Long, String> recipeNames = new TreeMap<>();
+        //ArrayList<String> recipeNames = new ArrayList();
+        Cursor listCursor = database.query(RECIPES_TABLE_NAME,
+                new String [] {COLUMN_ID, COLUMN_NAME},
+                null, null, null, null, COLUMN_ID + " descending");
+        while (listCursor.moveToNext()) {
+            Long id = listCursor.getLong(0);
+            String name= listCursor.getString(1);
+            recipeNames.put(id, name);
+        }
+        listCursor.close();
+        return recipeNames;
     }
 
     public boolean saveRecipeToDatabase(Recipe recipe) {

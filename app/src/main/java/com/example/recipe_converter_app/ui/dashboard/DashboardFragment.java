@@ -15,17 +15,17 @@ import com.example.recipe_converter_app.databinding.FragmentDashboardBinding;
 public class DashboardFragment extends Fragment {
 
     private FragmentDashboardBinding binding;
+    DashboardViewModel dashboardViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
+        dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
         return root;
     }
 

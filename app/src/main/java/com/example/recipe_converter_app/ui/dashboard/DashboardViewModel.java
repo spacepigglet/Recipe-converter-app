@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.recipe_converter_app.logic.DatabaseHelper;
 
+import java.util.TreeMap;
+
 public class DashboardViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
@@ -21,9 +23,10 @@ public class DashboardViewModel extends ViewModel {
         DatabaseHelper dbHelper = new DatabaseHelper(context);
         dbHelper.getRecipeFromDatabase(recipeName);
     }
-    public void getAllRecipesFromDatabase(Context context){
+    public TreeMap<Long, String> getAllRecipesFromDatabase(Context context){
         DatabaseHelper dbHelper = new DatabaseHelper(context);
-        dbHelper.getAllRecipesFromDatabase();
+        TreeMap<Long, String> recipeNames = dbHelper.getAllRecipeNamesFromDatabase();
+        return recipeNames;
     }
 
     public LiveData<String> getText() {
