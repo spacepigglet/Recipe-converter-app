@@ -84,7 +84,7 @@ public class ChooseBaseIngredientFragment extends Fragment {
                         viewModel.setOriginalBaseIngredientAmount(ingredient.getAmount());
                         binding.instruction.setVisibility(View.VISIBLE);
                         binding.newAmountLayout.setVisibility(View.VISIBLE);
-                        binding.generateRecipeButton.setVisibility(View.VISIBLE);
+                        binding.generateRecipeButton.setEnabled(true);
                         Unit unit = ingredient.getUnit();
                         String instruction=
                                 getResources().getString(R.string.new_amount_instruction, selectedIngredientName);

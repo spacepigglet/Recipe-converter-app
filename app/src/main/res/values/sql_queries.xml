@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="create_tables">
-        "CREATE TABLE IF NOT EXISTS Recipes (
+        <item>"CREATE TABLE IF NOT EXISTS Recipes (
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         name TEXT NOT NULL,
         instructions TEXT
-        );
+        );</item>
 
-        CREATE TABLE IF NOT EXISTS Ingredients (
+        <item>CREATE TABLE IF NOT EXISTS Ingredients (
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         name TEXT NOT NULL
-        );
+        );</item>
 
-        CREATE TABLE IF NOT EXISTS RecipeIngredients (
+        <item>CREATE TABLE IF NOT EXISTS RecipeIngredients (
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         recipe_id INTEGER NOT NULL,
         ingredient_id INTEGER NOT NULL,
@@ -20,7 +20,7 @@
         unit TEXT NOT NULL,
         FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
         FOREIGN KEY (ingredient_id) REFERENCES Ingredients(id)
-        );"
+        );"</item>
     </string-array>
 
 </resources>

@@ -15,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.recipe_converter_app.R;
 import com.example.recipe_converter_app.databinding.FragmentAddIngredientsBinding;
+import com.example.recipe_converter_app.logic.Ingredient;
 import com.example.recipe_converter_app.logic.Unit;
 
 public class AddIngredientsFragment extends Fragment {
@@ -56,17 +57,16 @@ public class AddIngredientsFragment extends Fragment {
         if(name.equals("") || amountString.equals("") || unitObject == null){
             Toast.makeText(getContext(), "All fields must be filled in!", Toast.LENGTH_SHORT).show();
         }else{
-            boolean wasAdded = viewModel.addIngredient(name, Float.parseFloat(amountString), (Unit) unitObject);
-            if(wasAdded){
-                resetFields();
-                displayCurrentRecipe();
-            }
+            Ingredient addedIngredient = viewModel.addIngredient(name, Float.parseFloat(amountString), (Unit) unitObject);
+            resetFields();
+            displayCurrentRecipe(addedIngredient);
+
         }
     }
 
-    private void displayCurrentRecipe() {
-        binding.nextButton.setVisibility(View.VISIBLE);
-        binding.currentRecipe.append(viewModel.getCurrentIngredient().toString() + "\n");
+    private void displayCurrentRecipe(Ingredient addedIngredient) {
+        binding.nextButton.setEnabled(true);
+        binding.currentRecipe.append(addedIngredient.toString() + "\n");
     }
 
     private void resetFields(){

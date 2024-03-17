@@ -10,11 +10,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.recipe_converter_app.databinding.FragmentMyRecipesBinding;
+import com.example.recipe_converter_app.logic.Recipe;
+import com.example.recipe_converter_app.ui.RecipeCardModel;
+
+import java.util.ArrayList;
+
 
 public class MyRecipesFragment extends Fragment {
 
     private FragmentMyRecipesBinding binding;
-    MyRecipesViewModel myRecipesViewModel;
+    private MyRecipesViewModel myRecipesViewModel;
+    private ArrayList<RecipeCardModel> recipeCardModels = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -23,9 +29,13 @@ public class MyRecipesFragment extends Fragment {
 
         binding = FragmentMyRecipesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        setupRecipeCardModels();
 
         return root;
+    }
+
+    private void setupRecipeCardModels() {
+        ArrayList<Recipe> recipes = myRecipesViewModel.getAllRecipesFromDatabase(getContext());
     }
 
     @Override

@@ -9,8 +9,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "recipesdb.sqlite";
@@ -39,19 +37,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void getRecipeFromDatabase(String recipeName) {
     }
-    public TreeMap<Long, String> getAllRecipeNamesFromDatabase() {
+    public ArrayList<Recipe> getAllRecipeNamesFromDatabase() {
         SQLiteDatabase database = this.getReadableDatabase();
-        TreeMap<Long, String> recipeNames = new TreeMap<>();
-        //ArrayList<String> recipeNames = new ArrayList();
+        ArrayList<Recipe> recipeNames = new ArrayList();
         Cursor listCursor = database.query(RECIPES_TABLE_NAME,
                 new String [] {COLUMN_ID, COLUMN_NAME},
                 null, null, null, null, COLUMN_ID + " descending");
         while (listCursor.moveToNext()) {
             Long id = listCursor.getLong(0);
             String name= listCursor.getString(1);
-            recipeNames.put(id, name);
+            recipeNames.add(new Recipe(name, id));
         }
         listCursor.close();
+        database.close();
         return recipeNames;
     }
 
@@ -86,6 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long recipeIngredientId = database.insert(RECIPE_INGREDIENTS_TABLE_NAME, null, recipeIngredientValues);
         recipeIngredientSuccess = insertSuccess(recipeIngredientId);
         boolean allSuccess = recipeSuccess && ingredientSuccess && recipeIngredientSuccess;
+        database.close();
         return allSuccess;
     }
 

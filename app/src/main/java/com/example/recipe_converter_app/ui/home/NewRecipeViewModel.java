@@ -16,8 +16,6 @@ import java.util.ArrayList;
 public class NewRecipeViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-    private ArrayList<Ingredient> recipeIngredients;
-    private Ingredient currentIngredient;
     private Recipe recipe;
     private float newBaseIngredientAmount;
     private float originalBaseIngredientAmount;
@@ -41,7 +39,6 @@ public class NewRecipeViewModel extends ViewModel {
 
     public NewRecipeViewModel() {
         mText = new MutableLiveData<>();
-        recipeIngredients = new ArrayList<>();
         /*recipeIngredients = new LiveData<List<Ingredient>>() {
             @Override
             public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Ingredient>> observer) {
@@ -57,13 +54,11 @@ public class NewRecipeViewModel extends ViewModel {
         return mText.getValue();
     }
 
-    public boolean addIngredient(String ingredientToAdd, float amount, Unit unit){
+    public Ingredient addIngredient(String ingredientToAdd, float amount, Unit unit){
         Ingredient ingredient = new Ingredient(ingredientToAdd, amount, unit);
-        currentIngredient = ingredient;
-
-        return recipe.addIngredient(ingredient);
+        recipe.addIngredient(ingredient);
+        return ingredient;
     }
-    public Ingredient getCurrentIngredient(){return currentIngredient;}
 
     public void newRecipe(String title){
         recipe = new Recipe(title);

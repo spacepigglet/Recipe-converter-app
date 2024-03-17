@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/generate_recipe"
-                android:visibility="gone"/>
+                android:enabled="false"/>
 
 
 

@@ -8,10 +8,16 @@ public class Recipe {
     private String name;
     //private String description;
     private List<Ingredient> ingredients;
+    private long id = 0;
 
     public Recipe(String name) {
         this.name = name;
         ingredients = new ArrayList<>();
+    }
+    public Recipe(String name, long id) {
+        this.name = name;
+        ingredients = new ArrayList<>();
+        this.id = id;
     }
 
     public boolean addIngredient(Ingredient ingredient) {
