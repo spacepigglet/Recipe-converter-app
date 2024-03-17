@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,8 +16,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.recipe_converter_app.R;
 import com.example.recipe_converter_app.databinding.FragmentAddIngredientsBinding;
 import com.example.recipe_converter_app.logic.Unit;
-
-import java.util.List;
 
 public class AddIngredientsFragment extends Fragment {
     private NewRecipeViewModel viewModel;
@@ -80,7 +76,7 @@ public class AddIngredientsFragment extends Fragment {
     }
 
     private void displayTitle() {
-        String title = viewModel.getRecipe().getRecipeName();
+        String title = viewModel.getRecipe().getName();
         String textToDisplay = getString(R.string.recipe) + " " + title ;
         binding.recipeTitle.setText(textToDisplay);
     }

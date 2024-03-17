@@ -26,10 +26,6 @@ public class Recipe {
         this.name = name;
     }
 
-    public String getRecipeName() {
-        return name;
-    }
-
     public List<Ingredient> getIngredients() {
         return Collections.unmodifiableList(ingredients);
     }
