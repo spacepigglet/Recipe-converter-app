@@ -1,4 +1,4 @@
-package com.example.recipe_converter_app.ui.dashboard;
+package com.example.recipe_converter_app.ui.my_recipes;
 
 import android.os.Bundle;
 import android.util.Log;
