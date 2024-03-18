@@ -1,5 +1,7 @@
 package com.example.recipe_converter_app.logic;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +11,7 @@ public class Recipe {
     //private String description;
     private List<Ingredient> ingredients;
     private long id = 0;
+    private Bitmap image ;
 
     public Recipe(String name) {
         this.name = name;
@@ -43,5 +46,13 @@ public class Recipe {
         }
         //no ingredient by that name found in the recipe
         return null;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 }

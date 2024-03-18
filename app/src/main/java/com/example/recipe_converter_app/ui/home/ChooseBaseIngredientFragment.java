@@ -46,7 +46,7 @@ public class ChooseBaseIngredientFragment extends Fragment {
             //have to set newBaseIngredientAmount before generating recipe
             viewModel.setNewBaseIngredientAmount(Float.parseFloat(newAmountStr));
             viewModel.generateRecipe(getContext());
-            Toast.makeText(getContext(), "New recipe generated!\nSee\"My Recipes\n", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "New recipe generated!\nSee\"My Recipes\"", Toast.LENGTH_SHORT).show();
             NavHostFragment.findNavController(ChooseBaseIngredientFragment.this)
                     .navigate(R.id.action_ChooseBaseIngredientFragment_to_HomeFragment);
         }
