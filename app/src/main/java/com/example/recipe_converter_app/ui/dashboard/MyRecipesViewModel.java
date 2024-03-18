@@ -24,9 +24,9 @@ public class MyRecipesViewModel extends ViewModel {
 
     }
 
-    public void getFromDatabase(String recipeName, Context context){
+    public void getFromDatabase(Long recipeId, Context context){
         DatabaseHelper dbHelper = new DatabaseHelper(context);
-        dbHelper.getRecipeFromDatabase(recipeName);
+        dbHelper.getRecipeFromDatabase(recipeId);
     }
     public ArrayList<Recipe> getAllRecipesFromDatabase(Context context){
         DatabaseHelper dbHelper = new DatabaseHelper(context);

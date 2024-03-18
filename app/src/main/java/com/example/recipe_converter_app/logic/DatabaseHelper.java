@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -35,14 +36,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         createTables(db);
     }
 
-    public void getRecipeFromDatabase(String recipeName) {
+    public void getRecipeFromDatabase(Long recipeId) {
     }
     public ArrayList<Recipe> getAllRecipeNamesFromDatabase() {
         SQLiteDatabase database = this.getReadableDatabase();
         ArrayList<Recipe> recipeNames = new ArrayList();
         Cursor listCursor = database.query(RECIPES_TABLE_NAME,
                 new String [] {COLUMN_ID, COLUMN_NAME},
-                null, null, null, null, COLUMN_ID + " descending");
+                null, null, null, null, COLUMN_ID + " desc"); //
         while (listCursor.moveToNext()) {
             Long id = listCursor.getLong(0);
             String name= listCursor.getString(1);
@@ -50,6 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         listCursor.close();
         database.close();
+
         return recipeNames;
     }
 
