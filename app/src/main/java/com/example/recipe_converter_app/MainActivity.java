@@ -1,6 +1,7 @@
 package com.example.recipe_converter_app;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -39,6 +40,16 @@ public class MainActivity extends AppCompatActivity {
         ).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+        // Register listener for destination changes
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.navigation_home || destination.getId() == R.id.navigation_my_recipes || destination.getId() == R.id.navigation_notifications) {
+                // Show bottom navigation bar for top-level destinations
+                binding.navView.setVisibility(View.VISIBLE);
+            } else {
+                // Hide bottom navigation bar for secondary fragments
+                binding.navView.setVisibility(View.GONE);
+            }
+        });
 
     }
     @Override

@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -27,9 +29,23 @@ public class ViewRecipeFragment extends Fragment {
                 new ViewModelProvider(requireActivity()).get(MyRecipesViewModel.class);
         binding = FragmentViewRecipeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        displayRecipe();
+
 
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+
+        // Set the title dynamically
+        if (actionBar != null) {
+            Recipe recipeCard = myRecipesViewModel.getSelectedRecipeCard();
+            actionBar.setTitle(recipeCard.getName());
+        }
+        displayRecipe();
     }
 
     private void displayRecipe() {
