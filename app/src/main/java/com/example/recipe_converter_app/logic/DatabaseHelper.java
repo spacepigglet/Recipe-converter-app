@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "recipesdb.sqlite";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String INGREDIENTS_TABLE_NAME = "ingredients";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
@@ -34,6 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         createTables(db);
+        Log.d("table not found debug", "create tables called");
     }
 
     /*public Recipe getRecipeFromDatabase(Long recipeId) {
@@ -60,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return recipe;
     }*/
     public Recipe getRecipeFromDatabase(Long recipeId){
+        Log.d("debug view recipe", "getRecipeFromDatabase Long recipeId: " + recipeId);
         SQLiteDatabase database = this.getReadableDatabase();
         // 1. Query to retrieve the recipe name
         String recipeSelection = COLUMN_ID + " = ?";
@@ -73,6 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             recipeName = recipeCursor.getString(0);
             recipeCursor.close();
         }
+        Log.d("debug view recipe", "getRecipeFromDatabase recipename: " + recipeName);
         Recipe recipe = new Recipe(recipeName);
 
 // 2. Query to retrieve ingredient details
@@ -89,33 +93,135 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String ingredientName = ingredientCursor.getString(0); //ingredientCursor.getColumnIndex(COLUMN_NAME)
                 float amount = ingredientCursor.getFloat(1); //ingredientCursor.getColumnIndex(COLUMN_AMOUNT)
                 String unit = ingredientCursor.getString(2);//ingredientCursor.getColumnIndex(COLUMN_UNIT)
-                Unit unitEnum = Unit.valueOf(unit);
+                Unit unitEnum = Unit.fromString(unit);
                 //ingredients.add(new Ingredient(ingredientName, amount, unit));
-                recipe.addIngredient(new Ingredient(ingredientName, amount, unitEnum));
+                Ingredient ingredient = new Ingredient(ingredientName, amount, unitEnum);
+                recipe.addIngredient(ingredient);
+                Log.d("debug view ingredient:", "getRecipeFromDatabase ingredient: " + ingredient);
             }
             ingredientCursor.close();
         }
+        Log.d("debug view ingredient", "getRecipeFromDatabase recipe.getIngredient: " + recipe.getIngredients());
+        Log.d("debug view recipe", "getRecipeFromDatabase recipe: " + recipe);
         return recipe;
     }
 
     public ArrayList<Recipe> getAllRecipeNamesFromDatabase() {
         SQLiteDatabase database = this.getReadableDatabase();
         ArrayList<Recipe> recipeNames = new ArrayList();
-        Cursor listCursor = database.query(RECIPES_TABLE_NAME,
-                new String [] {COLUMN_ID, COLUMN_NAME},
-                null, null, null, null, COLUMN_ID + " desc"); //
-        while (listCursor.moveToNext()) {
-            Long id = listCursor.getLong(0);
-            String name= listCursor.getString(1);
-            recipeNames.add(new Recipe(name, id));
+        Cursor recipeCursor = null;
+        try {
+            recipeCursor = database.query(RECIPES_TABLE_NAME,
+                    new String[]{COLUMN_ID, COLUMN_NAME},
+                    null, null, null, null, COLUMN_ID + " desc"); //
+            while (recipeCursor.moveToNext()) {
+                Long id = recipeCursor.getLong(0);
+                String name = recipeCursor.getString(1);
+                recipeNames.add(new Recipe(name, id));
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+
+        } finally {
+            if(recipeCursor != null){
+                recipeCursor.close();
+            }
+            if (database != null) {
+                database.close();
+            }
         }
-        listCursor.close();
-        database.close();
+        Log.d("debug view recipe", "getAllRecipeNamesFromDatabase recipes: " + recipeNames);
 
         return recipeNames;
     }
-
     public boolean saveRecipeToDatabase(Recipe recipe) {
+        Log.d("debug view recipe", "saveRecipeToDatabase recipe : " + recipe);
+        SQLiteDatabase database = null;
+        boolean success = false;
+
+        try {
+            database = getWritableDatabase();
+            database.beginTransaction();
+
+            // Insert the recipe name
+            long recipeId = insertRecipeName(database, recipe.getName());
+
+            // Check if the recipe ID is valid
+            if (recipeId != -1) {
+                // Insert the ingredients
+                for (Ingredient ingredient : recipe.getIngredients()) {
+                    // Insert ingredient if it doesn't exist
+                    long ingredientId = insertIngredientIfNotExists(database, ingredient.getName());
+                    if (ingredientId == -1) {
+                        throw new SQLiteException("Failed to insert ingredient: " + ingredient.getName());
+                    }
+                    // Insert the recipe ingredient
+                    long recipeIngredientId = insertRecipeIngredient(database, recipeId, ingredientId, ingredient.getAmount(), ingredient.getUnit().getName());
+                    if (recipeIngredientId == -1) {
+                        throw new SQLiteException("Failed to insert recipe ingredient for: " + ingredient.getName());
+                    }
+                }
+                // All operations successful, commit the transaction
+                database.setTransactionSuccessful();
+                success = true;
+            }
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            // End the transaction
+            if (database != null) {
+                database.endTransaction(); //changes may or may not be committed
+                database.close();
+            }
+        }
+
+        return success;
+    }
+
+    private long insertRecipeName(SQLiteDatabase database, String name) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, name);
+        return database.insert(RECIPES_TABLE_NAME, null, values);
+    }
+
+    private long insertIngredientIfNotExists(SQLiteDatabase database, String name) {
+        long ingredientId = getIngredientId(database, name);
+        if (ingredientId == -1) {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_NAME, name);
+            //if ingredient name alredy exists, returns existing id
+            ingredientId = database.insertWithOnConflict(INGREDIENTS_TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+        }
+        return ingredientId;
+    }
+
+    private long insertRecipeIngredient(SQLiteDatabase database, long recipeId, long ingredientId, double amount, String unit) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RECIPE_ID, recipeId);
+        values.put(COLUMN_INGREDIENT_ID, ingredientId);
+        values.put(COLUMN_AMOUNT, amount);
+        values.put(COLUMN_UNIT, unit);
+        return database.insert(RECIPE_INGREDIENTS_TABLE_NAME, null, values);
+    }
+
+    private long getIngredientId(SQLiteDatabase database, String name) {
+        //searching on name works because there is never multiple of ingredients with same name
+        long ingredientId = -1;
+        Cursor cursor = database.query(INGREDIENTS_TABLE_NAME, new String[]{COLUMN_ID},
+                COLUMN_NAME + "=?", new String[]{name}, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndex(COLUMN_ID);
+                if (columnIndex != -1) {
+                    ingredientId = cursor.getLong(columnIndex);
+                }
+            }
+            cursor.close();
+        }
+        return ingredientId;
+    }
+
+    /*public boolean saveRecipeToDatabase(Recipe recipe) {
         //get writable db
         SQLiteDatabase database = this.getWritableDatabase();
         boolean recipeSuccess = false;
@@ -138,17 +244,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             long ingredientId = database.insert(INGREDIENTS_TABLE_NAME, null, ingredientValues);
             ingredientSuccess = insertSuccess(ingredientId);
             //fill recipeIngredientValues
-            recipeIngredientValues.put(COLUMN_RECIPE_ID,recipeId);
-            recipeIngredientValues.put(COLUMN_INGREDIENT_ID,ingredientId);
-            recipeIngredientValues.put(COLUMN_AMOUNT,ingredient.getAmount());
-            recipeIngredientValues.put(COLUMN_UNIT,ingredient.getUnit().getName());
+            recipeIngredientValues.put(COLUMN_RECIPE_ID, recipeId);
+            recipeIngredientValues.put(COLUMN_INGREDIENT_ID, ingredientId);
+            recipeIngredientValues.put(COLUMN_AMOUNT, ingredient.getAmount());
+            recipeIngredientValues.put(COLUMN_UNIT, ingredient.getUnit().getName());
         }
         long recipeIngredientId = database.insert(RECIPE_INGREDIENTS_TABLE_NAME, null, recipeIngredientValues);
         recipeIngredientSuccess = insertSuccess(recipeIngredientId);
         boolean allSuccess = recipeSuccess && ingredientSuccess && recipeIngredientSuccess;
         database.close();
         return allSuccess;
-    }
+    }*/
 
     private boolean insertSuccess(long result) {
         if (result == -1) {
@@ -157,6 +263,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             Log.d("MyDatabaseHelper", "db insert success");
             return true;
+        }
+    }
+    public void resetDatabase() {
+        SQLiteDatabase db = this.getWritableDatabase(); // Assuming you have a method to get a writable database
+
+        // Delete all rows in each table
+        db.delete(INGREDIENTS_TABLE_NAME, null, null);
+        db.delete(RECIPES_TABLE_NAME, null, null);
+        db.delete(RECIPE_INGREDIENTS_TABLE_NAME, null, null);
+
+        // Reset auto-increment counters (if needed)
+        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + INGREDIENTS_TABLE_NAME + "'");
+        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + RECIPES_TABLE_NAME + "'");
+        db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + RECIPE_INGREDIENTS_TABLE_NAME + "'");
+
+        // Close the database
+        db.close();
+    }
+    public void clearDatabase() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            // Drop the ingredients table
+            db.execSQL("DROP TABLE IF EXISTS " + INGREDIENTS_TABLE_NAME);
+
+            // Drop the recipes table
+            db.execSQL("DROP TABLE IF EXISTS " + RECIPES_TABLE_NAME);
+
+            // Drop the recipe_ingredients table
+            db.execSQL("DROP TABLE IF EXISTS " + RECIPE_INGREDIENTS_TABLE_NAME);
+
+            // Recreate the tables if needed
+            // db.execSQL("CREATE TABLE " + INGREDIENTS_TABLE_NAME + "(...)");
+            // db.execSQL("CREATE TABLE " + RECIPES_TABLE_NAME + "(...)");
+            // db.execSQL("CREATE TABLE " + RECIPE_INGREDIENTS_TABLE_NAME + "(...)");
+        } finally {
+            db.close();
         }
     }
 
@@ -180,7 +322,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ");"
         );
         db.execSQL("create table if not exists " + RECIPE_INGREDIENTS_TABLE_NAME + "(" +
-                COLUMN_ID + " integer primary key autoincrement not null, " + COLUMN_NAME + " text not null," +
+                COLUMN_ID + " integer primary key autoincrement not null, " +
                 COLUMN_RECIPE_ID + " text not null," +
                 COLUMN_INGREDIENT_ID+ " text not null," +
                 COLUMN_AMOUNT+ " real not null,"+

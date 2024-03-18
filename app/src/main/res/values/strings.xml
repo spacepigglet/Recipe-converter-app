@@ -8,7 +8,7 @@
     <string name="new_amount">New amount</string>
     <string name="add_button_text">Add to recipe</string>
     <string name="next_button_text">Next</string>
-    <string name="edit_title">Recipe title</string>
+    <string name="edit_title">Enter recipe title</string>
     <string name="new_recipe_button_text">Create new recipe</string>
     <string name="title_add_ingredients">Add Ingredients</string>
     <string name="recipe">"Recipe: "</string>
@@ -16,4 +16,7 @@
     <string name="choose_base_ingredient">Choose Base Ingredient</string>
     <string name="generate_recipe">Generate recipe!</string>
     <string name="new_amount_instruction">Enter the amount of %s to base the new recipe on:</string>
+    <string name="no_recipes_found">No recipes found.</string>
+    <string name="text_size_normal">24sp</string>
+    <string name="text_size_title">28sp</string>
 </resources>

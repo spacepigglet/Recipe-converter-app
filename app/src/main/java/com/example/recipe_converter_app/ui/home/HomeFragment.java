@@ -28,12 +28,6 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         viewModel = new ViewModelProvider(requireActivity()).get(NewRecipeViewModel.class);
-        /*viewModel.getFilters().observe(getViewLifecycleOwner(), set -> {
-            // Update the selected filters UI.
-        });*/
-
-        final EditText editText = binding.editRecipeTitle;
-        //String title = editText.getText().toString();
 
         binding.newRecipeButton.setOnClickListener(view -> {
             String title = binding.editRecipeTitle.getText().toString();
@@ -50,17 +44,9 @@ public class HomeFragment extends Fragment {
 
         });
 
-        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
-    /*public void onFilterSelected(Filter filter) {
-        viewModel.addFilter(filter);
-    }
-
-    public void onFilterDeselected(Filter filter) {
-        viewModel.removeFilter(filter);
-    }*/
 
     @Override
     public void onDestroyView() {

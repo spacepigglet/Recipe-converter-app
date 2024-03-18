@@ -22,4 +22,14 @@ public enum Unit {
     @Override public String toString(){
         return name;
     }
+    // convert a string to the corresponding enum constant
+    public static Unit fromString(String name) {
+        for (Unit unit : Unit.values()) {
+            if (unit.name.equalsIgnoreCase(name)) {
+                return unit;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with name " + name);
+    }
+
 }

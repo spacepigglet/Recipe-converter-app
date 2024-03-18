@@ -19,14 +19,14 @@ import com.example.recipe_converter_app.logic.Ingredient;
 import com.example.recipe_converter_app.logic.Unit;
 
 public class AddIngredientsFragment extends Fragment {
-    private NewRecipeViewModel viewModel;
+    private NewRecipeViewModel newRecipeViewModel;
     private FragmentAddIngredientsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
                 //new ViewModelProvider(this).get(HomeViewModel.class);
-        viewModel = new ViewModelProvider(requireActivity()).get(NewRecipeViewModel.class);
+        newRecipeViewModel = new ViewModelProvider(requireActivity()).get(NewRecipeViewModel.class);
         /*viewModel.getFilteredList().observe(getViewLifecycleOwner(), list -> {
             // Update the list UI.
         });*/
@@ -50,14 +50,14 @@ public class AddIngredientsFragment extends Fragment {
     }
 
     private void addIngredient() {
-        String name = binding.editIngredient.getText().toString();
+        String name = binding.editIngredient.getText().toString().trim().toLowerCase();
         String amountString = binding.editAmount.getText().toString();
         Object unitObject = binding.unitsSpinner.getSelectedItem();
 
         if(name.equals("") || amountString.equals("") || unitObject == null){
             Toast.makeText(getContext(), "All fields must be filled in!", Toast.LENGTH_SHORT).show();
         }else{
-            Ingredient addedIngredient = viewModel.addIngredient(name, Float.parseFloat(amountString), (Unit) unitObject);
+            Ingredient addedIngredient = newRecipeViewModel.addIngredient(name, Float.parseFloat(amountString), (Unit) unitObject);
             resetFields();
             displayCurrentRecipe(addedIngredient);
 
@@ -76,7 +76,7 @@ public class AddIngredientsFragment extends Fragment {
     }
 
     private void displayTitle() {
-        String title = viewModel.getRecipe().getName();
+        String title = newRecipeViewModel.getRecipe().getName();
         String textToDisplay = getString(R.string.recipe) + " " + title ;
         binding.recipeTitle.setText(textToDisplay);
     }

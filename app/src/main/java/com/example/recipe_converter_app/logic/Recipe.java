@@ -2,6 +2,8 @@ package com.example.recipe_converter_app.logic;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +16,10 @@ public class Recipe {
     private Bitmap image ;
 
     public Recipe(String name) {
-        this.name = name;
+        if(name != null){
+            this.name = name;
+        }
+
         ingredients = new ArrayList<>();
     }
     public Recipe(String name, long id) {
@@ -54,5 +59,23 @@ public class Recipe {
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        if (ingredients.isEmpty()) {
+            return name + ": id " + id;
+        } else {
+            StringBuilder sb = new StringBuilder(name).append("\n");
+            for (Ingredient ingredient : ingredients) {
+                sb.append(ingredient).append("\n");
+            }
+            return sb.toString();
+        }
     }
 }

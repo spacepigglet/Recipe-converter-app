@@ -18,7 +18,10 @@
         android:id="@+id/navigation_my_recipes"
         android:name="com.example.recipe_converter_app.ui.dashboard.MyRecipesFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_my_recipes" />
+        tools:layout="@layout/fragment_my_recipes"/>
+    <action
+        android:id="@+id/action_MyRecipesFragment_to_ViewRecipeFragment"
+        app:destination="@id/navigation_view_recipe" />
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -43,6 +46,13 @@
         <action
             android:id="@+id/action_ChooseBaseIngredientFragment_to_HomeFragment"
             app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_view_recipe"
+        android:name="com.example.recipe_converter_app.ui.dashboard.ViewRecipeFragment"
+        android:label=""
+        tools:layout="@layout/fragment_my_recipes">
+
     </fragment>
 
 </navigation>
