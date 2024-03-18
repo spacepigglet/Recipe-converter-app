@@ -36,8 +36,68 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         createTables(db);
     }
 
-    public void getRecipeFromDatabase(Long recipeId) {
+    /*public Recipe getRecipeFromDatabase(Long recipeId) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        String[] selectionArgs = {String.valueOf(recipeId)};
+        Cursor cursor = database.query(RECIPE_INGREDIENTS_TABLE_NAME,
+                new String [] {COLUMN_NAME, COLUMN_AMOUNT, COLUMN_UNIT},
+                COLUMN_RECIPE_ID, selectionArgs, null, null, null);
+        Recipe recipe;
+        // Iterate over the cursor to retrieve the ingredients
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                String ingredientName = cursor.getString(cursor.getColumnIndex("Name"));
+                double amount = cursor.getDouble(cursor.getColumnIndex("Amount"));
+                String unit = cursor.getString(cursor.getColumnIndex("Unit"));
+
+                // Create an Ingredient object and add it to the list
+                Ingredient ingredient = new Ingredient(ingredientName, amount, unit);
+                ingredientsList.add(ingredient);
+            }
+            cursor.close(); // Close the cursor to release resources
+        }
+        database.close();
+        return recipe;
+    }*/
+    public Recipe getRecipeFromDatabase(Long recipeId){
+        SQLiteDatabase database = this.getReadableDatabase();
+        // 1. Query to retrieve the recipe name
+        String recipeSelection = COLUMN_ID + " = ?";
+        String[] recipeSelectionArgs = {String.valueOf(recipeId)};
+
+        Cursor recipeCursor = database.query(RECIPES_TABLE_NAME, new String[]{COLUMN_NAME},
+                recipeSelection, recipeSelectionArgs, null, null, null);
+
+        String recipeName = null;
+        if (recipeCursor != null && recipeCursor.moveToFirst()) {
+            recipeName = recipeCursor.getString(0);
+            recipeCursor.close();
+        }
+        Recipe recipe = new Recipe(recipeName);
+
+// 2. Query to retrieve ingredient details
+        String[] ingredientColumns = {INGREDIENTS_TABLE_NAME + "." + COLUMN_NAME, RECIPE_INGREDIENTS_TABLE_NAME + "." + COLUMN_AMOUNT, RECIPE_INGREDIENTS_TABLE_NAME + "." + COLUMN_UNIT};
+        String ingredientSelection = RECIPE_INGREDIENTS_TABLE_NAME + "." + COLUMN_RECIPE_ID + " = ?";
+        String[] ingredientSelectionArgs = {String.valueOf(recipeId)};
+
+        Cursor ingredientCursor = database.query(RECIPE_INGREDIENTS_TABLE_NAME + " INNER JOIN " + INGREDIENTS_TABLE_NAME +
+                        " ON " + RECIPE_INGREDIENTS_TABLE_NAME + "." + COLUMN_INGREDIENT_ID + " = " + INGREDIENTS_TABLE_NAME + "." + COLUMN_ID,
+                ingredientColumns, ingredientSelection, ingredientSelectionArgs, null, null, null);
+
+        if (ingredientCursor != null) {
+            while (ingredientCursor.moveToNext()) {
+                String ingredientName = ingredientCursor.getString(0); //ingredientCursor.getColumnIndex(COLUMN_NAME)
+                float amount = ingredientCursor.getFloat(1); //ingredientCursor.getColumnIndex(COLUMN_AMOUNT)
+                String unit = ingredientCursor.getString(2);//ingredientCursor.getColumnIndex(COLUMN_UNIT)
+                Unit unitEnum = Unit.valueOf(unit);
+                //ingredients.add(new Ingredient(ingredientName, amount, unit));
+                recipe.addIngredient(new Ingredient(ingredientName, amount, unitEnum));
+            }
+            ingredientCursor.close();
+        }
+        return recipe;
     }
+
     public ArrayList<Recipe> getAllRecipeNamesFromDatabase() {
         SQLiteDatabase database = this.getReadableDatabase();
         ArrayList<Recipe> recipeNames = new ArrayList();
