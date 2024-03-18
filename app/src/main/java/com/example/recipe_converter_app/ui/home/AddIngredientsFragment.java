@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,6 +23,7 @@ import com.example.recipe_converter_app.logic.Unit;
 public class AddIngredientsFragment extends Fragment {
     private NewRecipeViewModel newRecipeViewModel;
     private FragmentAddIngredientsBinding binding;
+    private int defaultUnitPosition;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -34,8 +37,8 @@ public class AddIngredientsFragment extends Fragment {
         binding = FragmentAddIngredientsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         displayTitle();
+        setupUnitSpinner();
         binding.addButton.setOnClickListener(view -> addIngredient());
-        binding.unitsSpinner.setAdapter(new ArrayAdapter<Unit>(getContext(), layout.simple_spinner_item, Unit.values()));
         binding.nextButton.setOnClickListener(view -> {
 
             NavHostFragment.findNavController(AddIngredientsFragment.this)
@@ -44,15 +47,29 @@ public class AddIngredientsFragment extends Fragment {
 
         });
 
-        //final EditText editIngredient = binding.editIngredient;
-        //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
+    }
+    private void setupUnitSpinner() {
+        ArrayAdapter<Unit> adapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_spinner_item, Unit.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.unitSpinner.setAdapter(adapter);
+
+        defaultUnitPosition = getDefaultUnitPosition();
+        binding.unitSpinner.setSelection(defaultUnitPosition);
+    }
+
+    private int getDefaultUnitPosition() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        // Default to the ordinal value of Unit.GRAM if no preference is set
+
+        return preferences.getInt("default_unit_position", Unit.GRAM.ordinal());
     }
 
     private void addIngredient() {
         String name = binding.editIngredient.getText().toString().trim().toLowerCase();
         String amountString = binding.editAmount.getText().toString();
-        Object unitObject = binding.unitsSpinner.getSelectedItem();
+        Object unitObject = binding.unitSpinner.getSelectedItem();
 
         if(name.equals("") || amountString.equals("") || unitObject == null){
             Toast.makeText(getContext(), "All fields must be filled in!", Toast.LENGTH_SHORT).show();
@@ -72,7 +89,7 @@ public class AddIngredientsFragment extends Fragment {
     private void resetFields(){
         binding.editIngredient.setText("");
         binding.editAmount.setText("");
-        binding.unitsSpinner.setSelection(0);
+        binding.unitSpinner.setSelection(defaultUnitPosition);
     }
 
     private void displayTitle() {

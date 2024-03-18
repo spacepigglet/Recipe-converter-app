@@ -54,7 +54,7 @@
                     android:inputType="numberDecimal"/>
 
                 <Spinner
-                    android:id="@+id/units_spinner"
+                    android:id="@+id/unit_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="30dp"
