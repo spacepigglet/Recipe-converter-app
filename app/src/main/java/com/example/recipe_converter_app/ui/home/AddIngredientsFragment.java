@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -50,8 +49,8 @@ public class AddIngredientsFragment extends Fragment {
     }
     private void setupUnitSpinner() {
         ArrayAdapter<Unit> adapter = new ArrayAdapter<>(requireContext(),
-                R.layout.spinner_list, Unit.values());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.spinner_item, Unit.values());
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         binding.unitSpinner.setAdapter(adapter);
 
         defaultUnitPosition = getDefaultUnitPosition();
@@ -59,10 +58,11 @@ public class AddIngredientsFragment extends Fragment {
     }
 
     private int getDefaultUnitPosition() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        SharedPreferences sharedPref = getActivity().getPreferences(getContext().MODE_PRIVATE);
         // Default to the ordinal value of Unit.GRAM if no preference is set
+        int defaultUnitPosition = sharedPref.getInt(getString(R.string.default_unit_position_key), Unit.GRAM.ordinal());
 
-        return preferences.getInt("default_unit_position", Unit.GRAM.ordinal());
+        return defaultUnitPosition;
     }
 
     private void addIngredient() {

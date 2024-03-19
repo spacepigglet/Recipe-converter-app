@@ -19,5 +19,5 @@
     <string name="no_recipes_found">No recipes found.</string>
     <string name="text_size_normal">24sp</string>
     <string name="text_size_title">28sp</string>
-    <string name="default_unit_position">default_unit_position</string>
+    <string name="default_unit_position_key">default_unit_position</string>
 </resources>

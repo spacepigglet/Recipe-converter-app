@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ellipsize="marquee"
+    android:padding="10dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginLeft="16dp"
+    android:singleLine="true"
+    android:textSize="24sp"/>
+<!-- style="@style/spinnerItemStyle"
+style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+android:background="@color/design_default_color_primary_dark"
+    android:textColor="@color/design_default_color_on_primary"-->
