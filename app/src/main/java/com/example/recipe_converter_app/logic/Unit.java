@@ -3,9 +3,9 @@ package com.example.recipe_converter_app.logic;
 public enum Unit {
     GRAM("g"),
     KILOGRAM("kg"),
-    MILLILITER("mL"),
-    DECILITER("dL"),
-    LITER("L"),
+    MILLILITER("ml"),
+    DECILITER("dl"),
+    LITER("l"),
     TEASPOON("tsk"),
     TABLESPOON("msk"),
     SPICE("krm"),

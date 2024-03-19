@@ -52,4 +52,9 @@ public class MyRecipesViewModel extends ViewModel {
     }
 
 
+    public void setRecipeCardToDelete(Recipe recipe) {
+    }
+
+    public void deleteSetRecipe() {
+    }
 }

@@ -26,7 +26,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/recipe_image_view"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:padding="24dp"
@@ -44,8 +44,18 @@
                 android:textStyle="bold"
                 android:textColor="@color/design_default_color_primary_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/recipe_image_view"
                 app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/delete_image_view"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:padding="24dp"
+                android:src="@drawable/baseline_delete_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

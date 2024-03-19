@@ -1,5 +1,5 @@
 
-package com.example.recipe_converter_app.ui;
+package com.example.recipe_converter_app.logic;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.recipe_converter_app.R;
-import com.example.recipe_converter_app.logic.Recipe;
-import com.example.recipe_converter_app.logic.RecyclerViewInterface;
 
 import java.util.ArrayList;
 
@@ -45,7 +43,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
         holder.tvRecipeName.setText(recipeCardModels.get(position).getName());
         Bitmap image = recipeCardModels.get(position).getImage();
         if(image != null){
-            holder.imageview.setImageBitmap(image);
+            holder.recipeImageView.setImageBitmap(image);
         }
 
     }
@@ -58,17 +56,30 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvRecipeName;
-        ImageView imageview;
+        ImageView recipeImageView;
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             tvRecipeName = itemView.findViewById(R.id.textView);
-            imageview = itemView.findViewById(R.id.imageView);
+            recipeImageView = itemView.findViewById(R.id.recipe_image_view);
             itemView.setOnClickListener(view -> {
                 if(recyclerViewInterface != null){
                     int position = getAdapterPosition();
                     if(position != RecyclerView.NO_POSITION);{
                         recyclerViewInterface.onItemClicked(position);
                     }
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (recyclerViewInterface != null) {
+                        int position = MyViewHolder.this.getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            recyclerViewInterface.onItemLongClicked(position);
+                            return true;
+                        }
+                    }
+                    return false;
                 }
             });
         }

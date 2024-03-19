@@ -21,4 +21,7 @@
     <string name="text_size_title">28sp</string>
     <string name="default_unit_position_key">default_unit_position</string>
     <string name="default_unit_text">Default Unit:</string>
+    <string name="dialog_confirm_delete">Are you sure you want to delete your recipe?</string>
+    <string name="yes">yes</string>
+    <string name="cancel">cancel</string>
 </resources>
