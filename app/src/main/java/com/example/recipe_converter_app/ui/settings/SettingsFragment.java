@@ -15,11 +15,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.recipe_converter_app.R;
 import com.example.recipe_converter_app.databinding.FragmentSettingsBinding;
 import com.example.recipe_converter_app.logic.Unit;
 
 public class SettingsFragment extends Fragment {
 
+    private static final int DEFAULT_SPINNER_POSITION = Unit.GRAM.ordinal();
     private FragmentSettingsBinding binding;
     SettingsViewModel settingsViewModel;
     private SharedPreferences sharedPreferences;
@@ -53,9 +55,10 @@ public class SettingsFragment extends Fragment {
 
         // Set up spinner with enum values
         ArrayAdapter<Unit> adapter = new ArrayAdapter<>(requireContext(),
-                android.R.layout.simple_spinner_item, Unit.values());
+                R.layout.spinner_list, Unit.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.defaultUnitSpinner.setAdapter(adapter);
+        setStartPosition();
 
         // Save selected default unit to SharedPreferences when selected
         binding.defaultUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -72,8 +75,17 @@ public class SettingsFragment extends Fragment {
 
     }
     private void saveDefaultUnitPosition(int position) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        preferences.edit().putInt("default_unit_position", position).apply();
+        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        //preferences.edit().putInt("default_unit_position", position).apply();
+        SharedPreferences sharedPref = getActivity().getPreferences(getContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(getString(R.string.default_unit_position), position);
+        editor.apply();
+    }
+    private void setStartPosition(){
+        SharedPreferences sharedPref = getActivity().getPreferences(getContext().MODE_PRIVATE);
+        int defaultUnitPosition = sharedPref.getInt(getString(R.string.default_unit_position), DEFAULT_SPINNER_POSITION);
+        binding.defaultUnitSpinner.setSelection(defaultUnitPosition);
     }
 
 }

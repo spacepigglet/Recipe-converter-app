@@ -1,6 +1,5 @@
 package com.example.recipe_converter_app.ui.home;
 
-import android.R.layout;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +50,7 @@ public class AddIngredientsFragment extends Fragment {
     }
     private void setupUnitSpinner() {
         ArrayAdapter<Unit> adapter = new ArrayAdapter<>(requireContext(),
-                android.R.layout.simple_spinner_item, Unit.values());
+                R.layout.spinner_list, Unit.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.unitSpinner.setAdapter(adapter);
 
@@ -94,7 +93,7 @@ public class AddIngredientsFragment extends Fragment {
 
     private void displayTitle() {
         String title = newRecipeViewModel.getRecipe().getName();
-        String textToDisplay = getString(R.string.recipe) + " " + title ;
+        String textToDisplay = getString(R.string.recipe_text) + " " + title ;
         binding.recipeTitle.setText(textToDisplay);
     }
 

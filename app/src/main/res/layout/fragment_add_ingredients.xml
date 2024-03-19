@@ -26,16 +26,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:textSize="24dp" />
+                android:textSize="24dp"
+                android:layout_marginBottom="20dp"/>
 
             <EditText
                 android:id="@+id/edit_ingredient"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="50dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:hint="@string/edit_text1"
+                android:hint="@string/edit_text_ingredient"
+                android:textSize="24sp"
                 android:inputType="text"
                 android:singleLine="true"
                 android:imeOptions="actionNext"/>
@@ -48,17 +48,17 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:minHeight="50dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:hint="@string/edit_text2"
+                    android:textSize="24sp"
+                    android:hint="@string/edit_text_amount"
                     android:inputType="numberDecimal"/>
 
                 <Spinner
                     android:id="@+id/unit_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:scrollbarSize="24dp"
                     android:minWidth="30dp"
-                    android:minHeight="20dp"/>
+                    android:minHeight="24dp"/>
             </LinearLayout>
 
             <Button
@@ -66,16 +66,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/add_button_text"
+                android:textSize="18sp"
                 android:layout_gravity="right"/>
             <TextView
                 android:id="@+id/current_recipe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ingredients_added_so_far"/>
+                android:layout_marginTop="24dp"
+                android:textSize="24sp"
+                android:text="@string/ingredients_added_so_far"
+                android:gravity="center"/>
             <Button
                 android:id="@+id/next_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="24sp"
                 android:text="@string/next_button_text"
                 android:layout_gravity="center"
                 android:enabled="false"/>
