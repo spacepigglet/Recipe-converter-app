@@ -26,22 +26,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:textSize="24dp" />
+                android:textSize="28sp"
+                android:layout_marginBottom="10dp"/>
 
             <RadioGroup
                 android:id="@+id/radio_group"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
 
             </RadioGroup>
+
             <TextView
                 android:id="@+id/instruction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="@string/new_amount_instruction"
-                android:textSize="20sp"
-                android:visibility="gone"/>
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/new_amount_layout"
@@ -50,15 +55,14 @@
                 android:orientation="horizontal"
                 android:visibility="gone">
 
-
-
                 <EditText
                     android:id="@+id/edit_new_amount"
-                    android:layout_width="120dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:hint="@string/new_amount"
+                    android:textSize="24sp"
                     android:inputType="numberDecimal"
                     android:minHeight="50dp"/>
 
@@ -66,8 +70,8 @@
                     android:id="@+id/unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="20dp"
-                    android:textSize="18sp"/>
+                    android:minWidth="24dp"
+                    android:textSize="24sp"/>
             </LinearLayout>
             <Button
                 android:id="@+id/generate_recipe_button"
@@ -75,7 +79,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/generate_recipe"
-                android:enabled="false"/>
+                android:enabled="false"
+                android:textSize="20sp"
+                android:layout_marginTop="20dp"/>
 
 
 
