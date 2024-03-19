@@ -15,7 +15,7 @@
     <string name="ingredients_added_so_far">Ingredients added so far:\n</string>
     <string name="choose_base_ingredient">Choose Base Ingredient</string>
     <string name="generate_recipe">Generate recipe!</string>
-    <string name="new_amount_instruction">Enter the amount of %s to base the new recipe on:</string>
+    <string name="new_amount_instruction">Enter the amount of your chosen ingredient to base the new recipe on:</string>
     <string name="no_recipes_found">No recipes found.</string>
     <string name="text_size_normal">24sp</string>
     <string name="text_size_title">28sp</string>

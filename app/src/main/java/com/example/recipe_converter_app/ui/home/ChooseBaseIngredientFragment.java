@@ -1,6 +1,8 @@
 package com.example.recipe_converter_app.ui.home;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.example.recipe_converter_app.databinding.FragmentChooseBaseIngredient
 import com.example.recipe_converter_app.logic.Ingredient;
 import com.example.recipe_converter_app.logic.Recipe;
 import com.example.recipe_converter_app.logic.Unit;
+import com.google.android.material.internal.TextWatcherAdapter;
 
 import java.util.List;
 
@@ -32,6 +35,7 @@ public class ChooseBaseIngredientFragment extends Fragment {
         View root = binding.getRoot();
         addRadioButtons();
         binding.recipeTitle.setText(viewModel.getRecipe().getName());
+        setEditTextListener();
         binding.generateRecipeButton.setOnClickListener(view -> generateRecipe());
 
         return root;
@@ -82,17 +86,28 @@ public class ChooseBaseIngredientFragment extends Fragment {
                     Ingredient ingredient = viewModel.getRecipe().getIngredient(selectedIngredientName);
                     if(ingredient != null){
                         viewModel.setOriginalBaseIngredientAmount(ingredient.getAmount());
-                        binding.instruction.setVisibility(View.VISIBLE);
-                        binding.newAmountLayout.setVisibility(View.VISIBLE);
-                        binding.generateRecipeButton.setEnabled(true);
+                        binding.editNewAmount.setEnabled(true);
                         Unit unit = ingredient.getUnit();
-                        String instruction=
-                                getResources().getString(R.string.new_amount_instruction, selectedIngredientName);
-                        binding.instruction.setText(instruction);
                         binding.unit.setText(unit.getName());
 
                     }
                 }
+            }
+        });
+    }
+    private void setEditTextListener(){
+        binding.editNewAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                binding.generateRecipeButton.setEnabled(true);
             }
         });
     }

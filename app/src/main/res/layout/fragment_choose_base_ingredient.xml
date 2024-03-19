@@ -45,15 +45,13 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/new_amount_instruction"
                 android:textAlignment="center"
-                android:textSize="24sp"
-                android:visibility="gone" />
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:id="@+id/new_amount_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/edit_new_amount"
@@ -62,9 +60,10 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:hint="@string/new_amount"
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     android:inputType="numberDecimal"
-                    android:minHeight="50dp"/>
+                    android:minHeight="50dp"
+                    android:enabled="false"/>
 
                 <TextView
                     android:id="@+id/unit"
