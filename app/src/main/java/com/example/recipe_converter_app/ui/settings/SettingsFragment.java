@@ -20,10 +20,8 @@ import com.example.recipe_converter_app.logic.Unit;
 
 public class SettingsFragment extends Fragment {
 
-    private final int default_spinner_position = Unit.GRAM.ordinal();
     private FragmentSettingsBinding binding;
     SettingsViewModel settingsViewModel;
-    private SharedPreferences sharedPreferences;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,8 +37,6 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupUnitSpinnerSetting();
-        /*final TextView textView = binding.textNotifications;
-        settingsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);*/
     }
 
     @Override
@@ -55,9 +51,8 @@ public class SettingsFragment extends Fragment {
         // Set up spinner with enum values
         ArrayAdapter<Unit> adapter = new ArrayAdapter<>(requireContext(),
                 R.layout.spinner_item, Unit.values());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         binding.defaultUnitSpinner.setAdapter(adapter);
-        int defaultValue = getResources().getInteger(R.integer.saved_spinner_unit_default_key);
         setStartPosition();
 
         // Save selected default unit to SharedPreferences when selected
@@ -75,8 +70,6 @@ public class SettingsFragment extends Fragment {
 
     }
     private void saveDefaultUnitPosition(int position) {
-        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        //preferences.edit().putInt("default_unit_position", position).apply();
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt(getString(R.string.default_unit_position_key), position);
