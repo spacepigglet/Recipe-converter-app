@@ -17,6 +17,7 @@ import com.example.recipe_converter_app.R;
 import com.example.recipe_converter_app.databinding.FragmentAddIngredientsBinding;
 import com.example.recipe_converter_app.logic.Ingredient;
 import com.example.recipe_converter_app.logic.Unit;
+import com.example.recipe_converter_app.util.VibrationUtil;
 
 public class AddIngredientsFragment extends Fragment {
     private NewRecipeViewModel newRecipeViewModel;
@@ -38,6 +39,7 @@ public class AddIngredientsFragment extends Fragment {
         setupUnitSpinner();
         binding.addButton.setOnClickListener(view -> addIngredient());
         binding.nextButton.setOnClickListener(view -> {
+            VibrationUtil.tick(requireContext());
 
             NavHostFragment.findNavController(AddIngredientsFragment.this)
                         .navigate(R.id.action_AddIngredientsFragment_to_ChooseBaseIngredientFragment);

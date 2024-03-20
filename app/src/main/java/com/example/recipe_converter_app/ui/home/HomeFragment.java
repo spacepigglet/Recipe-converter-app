@@ -15,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.recipe_converter_app.R;
 import com.example.recipe_converter_app.databinding.FragmentHomeBinding;
+import com.example.recipe_converter_app.util.VibrationUtil;
 
 public class HomeFragment extends Fragment {
 
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
 
                 //viewModel.setText(title);
                 viewModel.newRecipe(title);
+                VibrationUtil.tick(requireContext());
                 NavHostFragment.findNavController(HomeFragment.this)
                         .navigate(R.id.action_HomeFragment_to_AddIngredientsFragment);
             }else{

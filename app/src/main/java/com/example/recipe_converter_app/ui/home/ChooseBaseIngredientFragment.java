@@ -20,6 +20,7 @@ import com.example.recipe_converter_app.databinding.FragmentChooseBaseIngredient
 import com.example.recipe_converter_app.logic.Ingredient;
 import com.example.recipe_converter_app.logic.Recipe;
 import com.example.recipe_converter_app.logic.Unit;
+import com.example.recipe_converter_app.util.VibrationUtil;
 import com.google.android.material.internal.TextWatcherAdapter;
 
 import java.util.List;
@@ -47,6 +48,7 @@ public class ChooseBaseIngredientFragment extends Fragment {
         if(newAmountStr.equals("")){
             Toast.makeText(getContext(), "Input new base amount!", Toast.LENGTH_SHORT).show();
         }else{
+            VibrationUtil.tick(requireContext());
             //have to set newBaseIngredientAmount before generating recipe
             viewModel.setNewBaseIngredientAmount(Float.parseFloat(newAmountStr));
             viewModel.generateRecipe(getContext());
