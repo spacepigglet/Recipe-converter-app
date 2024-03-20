@@ -33,10 +33,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Create tables when the database is first created
         createTables(db);
         Log.d("table not found debug", "create tables called");
     }
 
+    // Method to delete a recipe from the database
     public void deleteRecipe(long recipeId) {
         SQLiteDatabase database = null;
         try {
@@ -69,13 +71,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
     }
+    // Helper method to delete recipe ingredients associated with a recipe
     private void deleteRecipeIngredients(SQLiteDatabase database, long recipeId) {
         database.delete(RECIPE_INGREDIENTS_TABLE_NAME, COLUMN_RECIPE_ID + "=?", new String[]{String.valueOf(recipeId)});
     }
 
+    // Helper method to delete a recipe record
     private void deleteRecipeRecord(SQLiteDatabase database, long recipeId) {
         database.delete(RECIPES_TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(recipeId)});
     }
+
+    // Helper method to get the list of ingredient IDs associated with a recipe
     private List<Long> getIngredientIdsForRecipe(SQLiteDatabase database, long recipeId) {
         List<Long> ingredientIds = new ArrayList<>();
         Cursor cursor = null;
@@ -100,6 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return ingredientIds;
     }
 
+    // Helper method to check if an ingredient is used by other recipes
     private boolean isIngredientUsedByOtherRecipes(SQLiteDatabase database, long ingredientId) {
         Cursor cursor = null;
         try {
@@ -113,16 +120,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    // Helper method to delete an ingredient
     private void deleteIngredient(SQLiteDatabase database, long ingredientId) {
         database.delete(INGREDIENTS_TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(ingredientId)});
     }
+
+    // Method to retrieve a recipe from the database by its ID
     public Recipe getRecipeFromDatabase(long recipeId){
         Log.d("debug view recipe", "getRecipeFromDatabase Long recipeId: " + recipeId);
         SQLiteDatabase database = this.getReadableDatabase();
-        // 1. Query to retrieve the recipe name
+        String recipeName = getRecipeName(database, recipeId);
+        Recipe recipe = new Recipe(recipeName);
+        queryIngredientDetails(database, recipeId, recipe);
+        return recipe;
+    }
+
+    private String getRecipeName(SQLiteDatabase database, long recipeId) {
         String recipeSelection = COLUMN_ID + " = ?";
         String[] recipeSelectionArgs = {String.valueOf(recipeId)};
-
         Cursor recipeCursor = database.query(RECIPES_TABLE_NAME, new String[]{COLUMN_NAME},
                 recipeSelection, recipeSelectionArgs, null, null, null);
 
@@ -132,24 +147,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             recipeCursor.close();
         }
         Log.d("debug view recipe", "getRecipeFromDatabase recipename: " + recipeName);
-        Recipe recipe = new Recipe(recipeName);
+        return recipeName;
+    }
 
-// 2. Query to retrieve ingredient details
+    private void queryIngredientDetails(SQLiteDatabase database, long recipeId, Recipe recipe) {
         String[] ingredientColumns = {INGREDIENTS_TABLE_NAME + "." + COLUMN_NAME, RECIPE_INGREDIENTS_TABLE_NAME + "." + COLUMN_AMOUNT, RECIPE_INGREDIENTS_TABLE_NAME + "." + COLUMN_UNIT};
         String ingredientSelection = RECIPE_INGREDIENTS_TABLE_NAME + "." + COLUMN_RECIPE_ID + " = ?";
         String[] ingredientSelectionArgs = {String.valueOf(recipeId)};
-
         Cursor ingredientCursor = database.query(RECIPE_INGREDIENTS_TABLE_NAME + " INNER JOIN " + INGREDIENTS_TABLE_NAME +
                         " ON " + RECIPE_INGREDIENTS_TABLE_NAME + "." + COLUMN_INGREDIENT_ID + " = " + INGREDIENTS_TABLE_NAME + "." + COLUMN_ID,
                 ingredientColumns, ingredientSelection, ingredientSelectionArgs, null, null, null);
 
         if (ingredientCursor != null) {
             while (ingredientCursor.moveToNext()) {
-                String ingredientName = ingredientCursor.getString(0); //ingredientCursor.getColumnIndex(COLUMN_NAME)
-                float amount = ingredientCursor.getFloat(1); //ingredientCursor.getColumnIndex(COLUMN_AMOUNT)
-                String unit = ingredientCursor.getString(2);//ingredientCursor.getColumnIndex(COLUMN_UNIT)
+                String ingredientName = ingredientCursor.getString(0);
+                float amount = ingredientCursor.getFloat(1);
+                String unit = ingredientCursor.getString(2);
                 Unit unitEnum = Unit.fromString(unit);
-                //ingredients.add(new Ingredient(ingredientName, amount, unit));
                 Ingredient ingredient = new Ingredient(ingredientName, amount, unitEnum);
                 recipe.addIngredient(ingredient);
                 Log.d("debug view ingredient:", "getRecipeFromDatabase ingredient: " + ingredient);
@@ -158,7 +172,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         Log.d("debug view ingredient", "getRecipeFromDatabase recipe.getIngredient: " + recipe.getIngredients());
         Log.d("debug view recipe", "getRecipeFromDatabase recipe: " + recipe);
-        return recipe;
     }
 
     public ArrayList<Recipe> getAllRecipeNamesFromDatabase() {
