@@ -76,6 +76,7 @@ public class AddIngredientsFragment extends Fragment {
         if(name.equals("") || amountString.equals("") || unitObject == null){
             Toast.makeText(getContext(), getString(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
         }else{
+            binding.nextButton.setEnabled(true);
             newRecipeViewModel.addIngredient(name, Float.parseFloat(amountString), (Unit) unitObject);
             resetFields();
             displayCurrentRecipe();
@@ -84,8 +85,12 @@ public class AddIngredientsFragment extends Fragment {
     }
 
     private void displayCurrentRecipe() {
-        binding.nextButton.setEnabled(true);
-        binding.currentRecipe.setText(newRecipeViewModel.getRecipe().getIngredientsString());
+        String ingredients = newRecipeViewModel.getRecipe().getIngredientsString();
+
+        if(!ingredients.isEmpty()){
+            binding.currentRecipe.setText(ingredients);
+            binding.nextButton.setEnabled(true);
+        }
     }
 
     private void resetFields(){
