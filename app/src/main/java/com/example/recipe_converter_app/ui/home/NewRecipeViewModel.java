@@ -16,43 +16,11 @@ import java.util.ArrayList;
 
 public class NewRecipeViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
     private Recipe recipe;
     private float newBaseIngredientAmount;
     private float originalBaseIngredientAmount;
-    //private final LiveData<List<Ingredient>> recipeIngredients;
-    /*private final MutableLiveData<Set<Filter>> filters = new MutableLiveData<>();
-
-    private final LiveData<List<Item>> originalList = ...;
-    private final LiveData<List<Item>> filteredList = ...;
-
-    public LiveData<List<Item>> getFilteredList() {
-        return filteredList;
-    }
-
-    public LiveData<Set<Filter>> getFilters() {
-        return filters;
-    }
-
-    public void addFilter(Filter filter) { ... }
-
-    public void removeFilter(Filter filter) { ... }*/
-
     public NewRecipeViewModel() {
-        mText = new MutableLiveData<>();
-        /*recipeIngredients = new LiveData<List<Ingredient>>() {
-            @Override
-            public void observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Ingredient>> observer) {
-                super.observe(owner, observer);
-            }
-        }*/
-    }
 
-    public void setText(String recipeTitle) {
-        mText.setValue(recipeTitle);
-    }
-    public String getText() {
-        return mText.getValue();
     }
 
     public Ingredient addIngredient(String ingredientToAdd, float amount, Unit unit){
@@ -79,7 +47,6 @@ public class NewRecipeViewModel extends ViewModel {
     }
 
     private void saveToDatabase(Recipe recipe, Context context) {
-        //get writable db
         DatabaseHelper dbHelper = new DatabaseHelper(context);
         dbHelper.saveRecipeToDatabase(recipe);
     }
@@ -96,4 +63,7 @@ public class NewRecipeViewModel extends ViewModel {
     }
 
 
+    public void resetRecipe() {
+        recipe = null;
+    }
 }

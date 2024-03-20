@@ -64,6 +64,13 @@ public class Recipe {
     public long getId() {
         return id;
     }
+    public String getIngredientsString(){
+        StringBuilder sb = new StringBuilder();
+        for (Ingredient ingredient : ingredients) {
+            sb.append(ingredient).append("\n");
+        }
+        return sb.toString();
+    }
 
     @NonNull
     @Override
@@ -72,9 +79,7 @@ public class Recipe {
             return name + ": id " + id;
         } else {
             StringBuilder sb = new StringBuilder(name).append("\n");
-            for (Ingredient ingredient : ingredients) {
-                sb.append(ingredient).append("\n");
-            }
+            sb.append(getIngredientsString());
             return sb.toString();
         }
     }

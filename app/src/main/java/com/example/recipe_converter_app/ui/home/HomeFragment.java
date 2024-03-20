@@ -29,6 +29,7 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
 
         viewModel = new ViewModelProvider(requireActivity()).get(NewRecipeViewModel.class);
+        viewModel.resetRecipe();
 
         binding.newRecipeButton.setOnClickListener(view -> {
             String title = binding.editRecipeTitle.getText().toString();

@@ -36,6 +36,8 @@ public class AddIngredientsFragment extends Fragment {
         binding = FragmentAddIngredientsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         displayTitle();
+        //in case the user backed up from the next step to add more
+        displayCurrentRecipe();
         setupUnitSpinner();
         binding.addButton.setOnClickListener(view -> addIngredient());
         binding.nextButton.setOnClickListener(view -> {
@@ -76,20 +78,22 @@ public class AddIngredientsFragment extends Fragment {
         if(name.equals("") || amountString.equals("") || unitObject == null){
             Toast.makeText(getContext(), "All fields must be filled in!", Toast.LENGTH_SHORT).show();
         }else{
-            Ingredient addedIngredient = newRecipeViewModel.addIngredient(name, Float.parseFloat(amountString), (Unit) unitObject);
+            newRecipeViewModel.addIngredient(name, Float.parseFloat(amountString), (Unit) unitObject);
             resetFields();
-            displayCurrentRecipe(addedIngredient);
+            displayCurrentRecipe();
 
         }
     }
 
-    private void displayCurrentRecipe(Ingredient addedIngredient) {
+    private void displayCurrentRecipe() {
         binding.nextButton.setEnabled(true);
-        binding.currentRecipe.append(addedIngredient.toString() + "\n");
+        binding.currentRecipe.setText(newRecipeViewModel.getRecipe().getIngredientsString());
     }
 
     private void resetFields(){
         binding.editIngredient.setText("");
+        //set focus to top row
+        binding.editIngredient.requestFocus();
         binding.editAmount.setText("");
         binding.unitSpinner.setSelection(defaultUnitPosition);
     }
