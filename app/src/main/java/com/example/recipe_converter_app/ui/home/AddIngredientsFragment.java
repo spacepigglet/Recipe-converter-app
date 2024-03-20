@@ -76,7 +76,7 @@ public class AddIngredientsFragment extends Fragment {
         Object unitObject = binding.unitSpinner.getSelectedItem();
 
         if(name.equals("") || amountString.equals("") || unitObject == null){
-            Toast.makeText(getContext(), "All fields must be filled in!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
         }else{
             newRecipeViewModel.addIngredient(name, Float.parseFloat(amountString), (Unit) unitObject);
             resetFields();

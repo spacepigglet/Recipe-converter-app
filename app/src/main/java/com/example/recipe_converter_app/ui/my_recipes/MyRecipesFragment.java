@@ -102,7 +102,7 @@ public class MyRecipesFragment extends Fragment implements RecyclerViewInterface
     @Override
     public void onConfirmation(boolean confirmed) {
         if (confirmed) {
-            Toast.makeText(getContext(), "Recipe deleted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.toast_recipe_deleted), Toast.LENGTH_SHORT).show();
             //the card should be removed
             int recipeCardPositionToDelete = myRecipesViewModel.getRecipeCardToDeletePosition();
             recipeCardModels.remove(recipeCardPositionToDelete);

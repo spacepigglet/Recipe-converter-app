@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
                 NavHostFragment.findNavController(HomeFragment.this)
                         .navigate(R.id.action_HomeFragment_to_AddIngredientsFragment);
             }else{
-                Toast.makeText(getContext(), "The new recipe needs a title!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.toast_no_title), Toast.LENGTH_SHORT).show();
             }
 
 

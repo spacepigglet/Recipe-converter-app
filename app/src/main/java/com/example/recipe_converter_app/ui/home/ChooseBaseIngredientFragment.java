@@ -21,7 +21,6 @@ import com.example.recipe_converter_app.logic.Ingredient;
 import com.example.recipe_converter_app.logic.Recipe;
 import com.example.recipe_converter_app.logic.Unit;
 import com.example.recipe_converter_app.util.VibrationUtil;
-import com.google.android.material.internal.TextWatcherAdapter;
 
 import java.util.List;
 
@@ -46,13 +45,13 @@ public class ChooseBaseIngredientFragment extends Fragment {
     private void generateRecipe() {
         String newAmountStr = binding.editNewAmount.getText().toString();
         if(newAmountStr.equals("")){
-            Toast.makeText(getContext(), "Input new base amount!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.toast_empty_base_amount), Toast.LENGTH_SHORT).show();
         }else{
             VibrationUtil.tick(requireContext());
             //have to set newBaseIngredientAmount before generating recipe
             viewModel.setNewBaseIngredientAmount(Float.parseFloat(newAmountStr));
             viewModel.generateRecipe(getContext());
-            Toast.makeText(getContext(), "New recipe generated!\nSee\"My Recipes\"", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.toast_new_recipe_generated), Toast.LENGTH_SHORT).show();
             NavHostFragment.findNavController(ChooseBaseIngredientFragment.this)
                     .navigate(R.id.action_ChooseBaseIngredientFragment_to_HomeFragment);
         }

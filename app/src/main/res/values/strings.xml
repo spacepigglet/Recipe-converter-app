@@ -24,4 +24,9 @@
     <string name="dialog_confirm_delete">Are you sure you want to delete your recipe?</string>
     <string name="yes">yes</string>
     <string name="cancel">cancel</string>
+    <string name="toast_new_recipe_generated">New recipe generated!\nSee\"My Recipes\"</string>
+    <string name="toast_empty_base_amount">Input new base amount!</string>
+    <string name="toast_empty_fields">All fields must be filled in!</string>
+    <string name="toast_no_title">The new recipe needs a title!</string>
+    <string name="toast_recipe_deleted">Recipe deleted</string>
 </resources>
