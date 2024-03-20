@@ -13,9 +13,9 @@ import java.util.ArrayList;
 public class MyRecipesViewModel extends ViewModel {
 
     private ArrayList<Recipe> recipeCardModels = new ArrayList<>();
-
-    private long recipeIdToView;
+    private int recipeCardToDeletePosition;
     private final MutableLiveData<Recipe> selectedRecipe = new MutableLiveData<>();
+    private MutableLiveData<Recipe> recipeCardToDelete = new MutableLiveData<>();
 
     public MyRecipesViewModel() {
 
@@ -39,22 +39,27 @@ public class MyRecipesViewModel extends ViewModel {
         //recipe is incomplete, only name and id
         return recipes;
     }
-    public long getRecipeIdToView() {
-        return recipeIdToView;
-    }
-
-    public void setRecipeIdToView(long recipeIdToView) {
-        this.recipeIdToView = recipeIdToView;
-    }
     public void resetDb(Context context) {
         DatabaseHelper dbHelper = new DatabaseHelper(context);
         dbHelper.clearDatabase();
     }
-
-
-    public void setRecipeCardToDelete(Recipe recipe) {
+    public void setRecipeCardToDelete(Recipe recipeCard) {
+        recipeCardToDelete.setValue(recipeCard);
+    }
+    public void resetRecipeCardToDelete() {
+        recipeCardToDelete = new MutableLiveData<>();
     }
 
-    public void deleteSetRecipe() {
+    public void deleteSetRecipe(Context context) {
+        DatabaseHelper dbHelper = new DatabaseHelper(context);
+        dbHelper.deleteRecipe(recipeCardToDelete.getValue().getId());
+    }
+
+    public void setRecipeCardToDeletePosition(int position) {
+        recipeCardToDeletePosition = position;
+    }
+
+    public int getRecipeCardToDeletePosition() {
+        return recipeCardToDeletePosition;
     }
 }

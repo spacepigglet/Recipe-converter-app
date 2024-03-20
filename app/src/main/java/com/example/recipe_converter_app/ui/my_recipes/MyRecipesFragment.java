@@ -31,6 +31,7 @@ public class MyRecipesFragment extends Fragment implements RecyclerViewInterface
     private FragmentMyRecipesBinding binding;
     private MyRecipesViewModel myRecipesViewModel;
     private ArrayList<Recipe> recipeCardModels = new ArrayList<>();
+    private RecipeRecyclerViewAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,22 +49,26 @@ public class MyRecipesFragment extends Fragment implements RecyclerViewInterface
 
         setupRecipeCardModels();
         //setup must be done before adapter
-        RecipeRecyclerViewAdapter adapter = new RecipeRecyclerViewAdapter(getContext(), recipeCardModels, this);
+        adapter = new RecipeRecyclerViewAdapter(getContext(), recipeCardModels, this);
         binding.recipeRecyclerView.setAdapter(adapter);
         binding.recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Show message if no recipes found
-        if (recipeCardModels.isEmpty()) {
-            binding.noRecipesMessage.setVisibility(View.VISIBLE);
-        } else {
-            binding.noRecipesMessage.setVisibility(View.GONE);
-        }
+        checkAdapterItemCount();
     }
 
     private void setupRecipeCardModels() {
         ArrayList<Recipe> recipes = myRecipesViewModel.getAllRecipesFromDatabase(getContext());
         recipeCardModels = recipes;
 
+    }
+
+    private void checkAdapterItemCount(){
+        if (adapter.getItemCount() == 0) {
+            binding.noRecipesMessage.setVisibility(View.VISIBLE);
+        } else {
+            binding.noRecipesMessage.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -87,6 +92,7 @@ public class MyRecipesFragment extends Fragment implements RecyclerViewInterface
         //save recipe in case it needs to be deleted.
         Recipe recipe = recipeCardModels.get(position);
         myRecipesViewModel.setRecipeCardToDelete(recipe);
+        myRecipesViewModel.setRecipeCardToDeletePosition(position);
 
         //delete dialog pop up
         ConfirmDeleteFragment dialog = new ConfirmDeleteFragment(this);
@@ -96,8 +102,18 @@ public class MyRecipesFragment extends Fragment implements RecyclerViewInterface
     @Override
     public void onConfirmation(boolean confirmed) {
         if (confirmed) {
-            Toast.makeText(getContext(), "delete recipe", Toast.LENGTH_SHORT).show();
-            myRecipesViewModel.deleteSetRecipe();
+            Toast.makeText(getContext(), "Recipe deleted", Toast.LENGTH_SHORT).show();
+            //the card should be removed
+            int recipeCardPositionToDelete = myRecipesViewModel.getRecipeCardToDeletePosition();
+            recipeCardModels.remove(recipeCardPositionToDelete);
+            adapter.notifyItemRemoved(recipeCardPositionToDelete);
+            //remove from database
+            myRecipesViewModel.deleteSetRecipe(requireContext());
+            //If adapter is empty, set the default text
+            checkAdapterItemCount();
+        }else{
+            //to avoid accidental deleting of old clicks
+            myRecipesViewModel.resetRecipeCardToDelete();
         }
     }
 

@@ -38,30 +38,86 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d("table not found debug", "create tables called");
     }
 
-    /*public Recipe getRecipeFromDatabase(Long recipeId) {
-        SQLiteDatabase database = this.getReadableDatabase();
-        String[] selectionArgs = {String.valueOf(recipeId)};
-        Cursor cursor = database.query(RECIPE_INGREDIENTS_TABLE_NAME,
-                new String [] {COLUMN_NAME, COLUMN_AMOUNT, COLUMN_UNIT},
-                COLUMN_RECIPE_ID, selectionArgs, null, null, null);
-        Recipe recipe;
-        // Iterate over the cursor to retrieve the ingredients
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                String ingredientName = cursor.getString(cursor.getColumnIndex("Name"));
-                double amount = cursor.getDouble(cursor.getColumnIndex("Amount"));
-                String unit = cursor.getString(cursor.getColumnIndex("Unit"));
+    public void deleteRecipe(long recipeId) {
+        SQLiteDatabase database = null;
+        try {
+            database = getWritableDatabase();
+            database.beginTransaction();
 
-                // Create an Ingredient object and add it to the list
-                Ingredient ingredient = new Ingredient(ingredientName, amount, unit);
-                ingredientsList.add(ingredient);
+            // Get the list of ingredient IDs associated with the recipe to be deleted
+            List<Long> ingredientIds = getIngredientIdsForRecipe(database, recipeId);
+
+            // Delete recipe from RECIPE_INGREDIENTS_TABLE, associated with the recipe
+            deleteRecipeIngredients(database, recipeId);
+
+            // Delete the recipe itself
+            deleteRecipeRecord(database, recipeId);
+
+            // Delete ingredients if they are associated with only one recipe
+            for (Long ingredientId : ingredientIds) {
+                if (!isIngredientUsedByOtherRecipes(database, ingredientId)) {
+                    deleteIngredient(database, ingredientId);
+                }
             }
-            cursor.close(); // Close the cursor to release resources
+
+            database.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            if (database != null) {
+                database.endTransaction(); //all changes committed, else rollback
+                database.close();
+            }
         }
-        database.close();
-        return recipe;
-    }*/
-    public Recipe getRecipeFromDatabase(Long recipeId){
+    }
+    private void deleteRecipeIngredients(SQLiteDatabase database, long recipeId) {
+        database.delete(RECIPE_INGREDIENTS_TABLE_NAME, COLUMN_RECIPE_ID + "=?", new String[]{String.valueOf(recipeId)});
+    }
+
+    private void deleteRecipeRecord(SQLiteDatabase database, long recipeId) {
+        database.delete(RECIPES_TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(recipeId)});
+    }
+    private List<Long> getIngredientIdsForRecipe(SQLiteDatabase database, long recipeId) {
+        List<Long> ingredientIds = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = database.query(RECIPE_INGREDIENTS_TABLE_NAME, new String[]{COLUMN_INGREDIENT_ID},
+                    COLUMN_RECIPE_ID + "=?", new String[]{String.valueOf(recipeId)}, null, null, null);
+            if (cursor != null) {
+                int columnIndex = -1;
+                while (cursor.moveToNext()) {
+                    columnIndex = cursor.getColumnIndex(COLUMN_INGREDIENT_ID);
+                    if(columnIndex != -1) {
+                        long ingredientId = cursor.getLong(columnIndex);
+                        ingredientIds.add(ingredientId);
+                    }
+                }
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return ingredientIds;
+    }
+
+    private boolean isIngredientUsedByOtherRecipes(SQLiteDatabase database, long ingredientId) {
+        Cursor cursor = null;
+        try {
+            cursor = database.query(RECIPE_INGREDIENTS_TABLE_NAME, new String[]{COLUMN_ID},
+                    COLUMN_INGREDIENT_ID + "=?", new String[]{String.valueOf(ingredientId)}, null, null, null);
+            return cursor != null && cursor.getCount() > 1; // Check if the ingredient is used by more than one recipe
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    private void deleteIngredient(SQLiteDatabase database, long ingredientId) {
+        database.delete(INGREDIENTS_TABLE_NAME, COLUMN_ID + "=?", new String[]{String.valueOf(ingredientId)});
+    }
+    public Recipe getRecipeFromDatabase(long recipeId){
         Log.d("debug view recipe", "getRecipeFromDatabase Long recipeId: " + recipeId);
         SQLiteDatabase database = this.getReadableDatabase();
         // 1. Query to retrieve the recipe name
@@ -108,14 +164,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Recipe> getAllRecipeNamesFromDatabase() {
         SQLiteDatabase database = this.getReadableDatabase();
-        ArrayList<Recipe> recipeNames = new ArrayList();
+        ArrayList<Recipe> recipeNames = new ArrayList<>();
         Cursor recipeCursor = null;
         try {
             recipeCursor = database.query(RECIPES_TABLE_NAME,
                     new String[]{COLUMN_ID, COLUMN_NAME},
                     null, null, null, null, COLUMN_ID + " desc"); //
             while (recipeCursor.moveToNext()) {
-                Long id = recipeCursor.getLong(0);
+                long id = recipeCursor.getLong(0);
                 String name = recipeCursor.getString(1);
                 recipeNames.add(new Recipe(name, id));
             }
@@ -221,50 +277,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return ingredientId;
     }
 
-    /*public boolean saveRecipeToDatabase(Recipe recipe) {
-        //get writable db
-        SQLiteDatabase database = this.getWritableDatabase();
-        boolean recipeSuccess = false;
-        boolean ingredientSuccess = false;
-        boolean recipeIngredientSuccess = false;
-
-        String recipeName = recipe.getName();
-        //populate recipes table
-        ContentValues recipeValues = new ContentValues();
-        recipeValues.put(COLUMN_NAME, recipeName);
-        long recipeId = database.insert(RECIPES_TABLE_NAME, null, recipeValues);
-        recipeSuccess = insertSuccess(recipeId);
-        ContentValues recipeIngredientValues = new ContentValues();
-
-        //fill ingredientValues
-        List<Ingredient> ingredients = recipe.getIngredients();
-        ContentValues ingredientValues = new ContentValues();
-        for (Ingredient ingredient : ingredients) {
-            ingredientValues.put(COLUMN_NAME, ingredient.getName());
-            long ingredientId = database.insert(INGREDIENTS_TABLE_NAME, null, ingredientValues);
-            ingredientSuccess = insertSuccess(ingredientId);
-            //fill recipeIngredientValues
-            recipeIngredientValues.put(COLUMN_RECIPE_ID, recipeId);
-            recipeIngredientValues.put(COLUMN_INGREDIENT_ID, ingredientId);
-            recipeIngredientValues.put(COLUMN_AMOUNT, ingredient.getAmount());
-            recipeIngredientValues.put(COLUMN_UNIT, ingredient.getUnit().getName());
-        }
-        long recipeIngredientId = database.insert(RECIPE_INGREDIENTS_TABLE_NAME, null, recipeIngredientValues);
-        recipeIngredientSuccess = insertSuccess(recipeIngredientId);
-        boolean allSuccess = recipeSuccess && ingredientSuccess && recipeIngredientSuccess;
-        database.close();
-        return allSuccess;
-    }*/
-
-    private boolean insertSuccess(long result) {
-        if (result == -1) {
-            Log.d("MyDatabaseHelper", "db insert fail");
-            return false;
-        } else {
-            Log.d("MyDatabaseHelper", "db insert success");
-            return true;
-        }
-    }
     public void resetDatabase() {
         SQLiteDatabase db = this.getWritableDatabase(); // Assuming you have a method to get a writable database
 
