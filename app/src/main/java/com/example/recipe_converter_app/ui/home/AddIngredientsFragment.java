@@ -68,6 +68,7 @@ public class AddIngredientsFragment extends Fragment {
     }
 
     private void addIngredient() {
+        VibrationUtil.tick(requireContext());
         String name = binding.editIngredient.getText().toString().trim().toLowerCase();
         String amountString = binding.editAmount.getText().toString();
         Object unitObject = binding.unitSpinner.getSelectedItem();
