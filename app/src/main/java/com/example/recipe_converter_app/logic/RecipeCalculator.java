@@ -1,5 +1,8 @@
 package com.example.recipe_converter_app.logic;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class RecipeCalculator {
     private final float ratio;
 
@@ -20,9 +23,16 @@ public class RecipeCalculator {
         Recipe newRecipe = new Recipe(recipe.getName());
         for(Ingredient ingredient : recipe.getIngredients()){
             float newAmount = newAmount(ingredient.getAmount());
-            Ingredient newIngredient = new Ingredient(ingredient.getName(), newAmount, ingredient.getUnit());
+            float roundedAmount= round(newAmount);
+            Ingredient newIngredient = new Ingredient(ingredient.getName(), roundedAmount, ingredient.getUnit());
             newRecipe.addIngredient(newIngredient);
         }
         return newRecipe;
+    }
+    private float round(float amount){
+        float roundedAmount = BigDecimal.valueOf(amount)
+                .setScale(1, RoundingMode.HALF_UP)
+                .floatValue();
+        return roundedAmount;
     }
 }
