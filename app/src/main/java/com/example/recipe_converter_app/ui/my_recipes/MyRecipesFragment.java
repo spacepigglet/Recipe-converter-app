@@ -16,11 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.recipe_converter_app.R;
 import com.example.recipe_converter_app.databinding.FragmentMyRecipesBinding;
-import com.example.recipe_converter_app.ui.ConfirmDeleteFragment;
+import com.example.recipe_converter_app.ui.dialog.ConfirmDeleteFragment;
 import com.example.recipe_converter_app.logic.DeleteDialogListener;
 import com.example.recipe_converter_app.logic.Recipe;
 import com.example.recipe_converter_app.logic.RecyclerViewInterface;
 import com.example.recipe_converter_app.logic.RecipeRecyclerViewAdapter;
+import com.example.recipe_converter_app.util.VibrationUtil;
 
 import java.util.ArrayList;
 
@@ -73,6 +74,7 @@ public class MyRecipesFragment extends Fragment implements RecyclerViewInterface
 
     @Override
     public void onItemClicked(int position) {
+        VibrationUtil.tick(requireContext());
         Recipe recipe = recipeCardModels.get(position);
         myRecipesViewModel.setSelectedRecipeCard(recipe);
         Log.d("debug view recipe", "MyRecipesFragment onItemClicked recipe card id: " + recipe);
@@ -97,4 +99,5 @@ public class MyRecipesFragment extends Fragment implements RecyclerViewInterface
         Toast.makeText(getContext(), "delete recipe", Toast.LENGTH_SHORT).show();
         myRecipesViewModel.deleteSetRecipe();
     }
+
 }
