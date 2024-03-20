@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.recipe_converter_app.R;
 import com.example.recipe_converter_app.logic.DeleteDialogListener;
+import com.example.recipe_converter_app.util.VibrationUtil;
 
 public class ConfirmDeleteFragment extends DialogFragment {
     private DeleteDialogListener listener;
@@ -25,6 +26,7 @@ public class ConfirmDeleteFragment extends DialogFragment {
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (listener != null) {
+                            VibrationUtil.tick(getContext());
                             listener.onConfirmation(true); // Notify MainActivity of "Yes" click
                         }
                     }
@@ -33,6 +35,7 @@ public class ConfirmDeleteFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancels the dialog.
                         if (listener != null) {
+                            VibrationUtil.tick(getContext());
                             listener.onConfirmation(false); // Notify MainActivity of "Cancel" click
                         }
                     }

@@ -65,6 +65,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
                 if(recyclerViewInterface != null){
                     int position = getAdapterPosition();
                     if(position != RecyclerView.NO_POSITION);{
+                        //let the recyclerViewInterface know which card was clicked
                         recyclerViewInterface.onItemClicked(position);
                     }
                 }
@@ -76,10 +77,10 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
                         int position = MyViewHolder.this.getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             recyclerViewInterface.onItemLongClicked(position);
-                            return true;
+                            return true; //setOnClickListener won't be triggered
                         }
                     }
-                    return false;
+                    return true;
                 }
             });
         }

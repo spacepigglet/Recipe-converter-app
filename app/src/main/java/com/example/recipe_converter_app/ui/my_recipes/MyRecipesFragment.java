@@ -84,20 +84,21 @@ public class MyRecipesFragment extends Fragment implements RecyclerViewInterface
 
     @Override
     public void onItemLongClicked(int position) {
-
-        ConfirmDeleteFragment dialog = new ConfirmDeleteFragment(this);
-        dialog.show(getChildFragmentManager(), "delete");
-
         //save recipe in case it needs to be deleted.
         Recipe recipe = recipeCardModels.get(position);
         myRecipesViewModel.setRecipeCardToDelete(recipe);
 
+        //delete dialog pop up
+        ConfirmDeleteFragment dialog = new ConfirmDeleteFragment(this);
+        dialog.show(getChildFragmentManager(), "delete");
     }
 
     @Override
     public void onConfirmation(boolean confirmed) {
-        Toast.makeText(getContext(), "delete recipe", Toast.LENGTH_SHORT).show();
-        myRecipesViewModel.deleteSetRecipe();
+        if (confirmed) {
+            Toast.makeText(getContext(), "delete recipe", Toast.LENGTH_SHORT).show();
+            myRecipesViewModel.deleteSetRecipe();
+        }
     }
 
 }
