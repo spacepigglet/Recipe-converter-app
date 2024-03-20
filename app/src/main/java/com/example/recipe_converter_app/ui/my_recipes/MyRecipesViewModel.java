@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class MyRecipesViewModel extends ViewModel {
 
-    private ArrayList<Recipe> recipeCardModels = new ArrayList<>();
     private int recipeCardToDeletePosition;
     private final MutableLiveData<Recipe> selectedRecipe = new MutableLiveData<>();
     private MutableLiveData<Recipe> recipeCardToDelete = new MutableLiveData<>();

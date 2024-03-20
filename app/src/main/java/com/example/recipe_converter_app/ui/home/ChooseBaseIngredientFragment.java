@@ -60,7 +60,7 @@ public class ChooseBaseIngredientFragment extends Fragment {
 
 
     private void addRadioButtons() {
-        //get string array from source
+        //get recipe to access ingredients to make radio buttons
         Recipe recipe = viewModel.getRecipe();
         List<Ingredient> ingredients =  recipe.getIngredients();
 
@@ -78,6 +78,7 @@ public class ChooseBaseIngredientFragment extends Fragment {
     }
 
     private void setRadioGroupListener() {
+        //user can only move on after checking a radio button
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

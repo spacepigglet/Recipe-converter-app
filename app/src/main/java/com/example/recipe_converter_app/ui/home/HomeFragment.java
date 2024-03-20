@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +19,7 @@ import com.example.recipe_converter_app.util.VibrationUtil;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    NewRecipeViewModel viewModel;
+    private NewRecipeViewModel viewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

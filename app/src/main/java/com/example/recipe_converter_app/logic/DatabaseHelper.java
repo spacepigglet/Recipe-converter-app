@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -197,6 +196,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         try {
             database = getWritableDatabase();
+            //transaction -> can committ all changes if nothing fails, else rollback
             database.beginTransaction();
 
             // Insert the recipe name
@@ -226,7 +226,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } finally {
             // End the transaction
             if (database != null) {
-                database.endTransaction(); //changes may or may not be committed
+                database.endTransaction();
                 database.close();
             }
         }
@@ -245,7 +245,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (ingredientId == -1) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_NAME, name);
-            //if ingredient name alredy exists, returns existing id
+            //if ingredient name already exists, returns existing id, else returns new id
             ingredientId = database.insertWithOnConflict(INGREDIENTS_TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
         }
         return ingredientId;
@@ -261,7 +261,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private long getIngredientId(SQLiteDatabase database, String name) {
-        //searching on name works because there is never multiple of ingredients with same name
+        //searching on ingredient name works because there is never multiples of ingredients with the same name
         long ingredientId = -1;
         Cursor cursor = database.query(INGREDIENTS_TABLE_NAME, new String[]{COLUMN_ID},
                 COLUMN_NAME + "=?", new String[]{name}, null, null, null);
@@ -285,30 +285,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(RECIPES_TABLE_NAME, null, null);
         db.delete(RECIPE_INGREDIENTS_TABLE_NAME, null, null);
 
-        // Reset auto-increment counters (if needed)
+        // Reset auto-increment counters
         db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + INGREDIENTS_TABLE_NAME + "'");
         db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + RECIPES_TABLE_NAME + "'");
         db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '" + RECIPE_INGREDIENTS_TABLE_NAME + "'");
 
-        // Close the database
         db.close();
     }
     public void clearDatabase() {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            // Drop the ingredients table
+            // Drop all tables
             db.execSQL("DROP TABLE IF EXISTS " + INGREDIENTS_TABLE_NAME);
-
-            // Drop the recipes table
             db.execSQL("DROP TABLE IF EXISTS " + RECIPES_TABLE_NAME);
-
-            // Drop the recipe_ingredients table
             db.execSQL("DROP TABLE IF EXISTS " + RECIPE_INGREDIENTS_TABLE_NAME);
 
-            // Recreate the tables if needed
-            // db.execSQL("CREATE TABLE " + INGREDIENTS_TABLE_NAME + "(...)");
-            // db.execSQL("CREATE TABLE " + RECIPES_TABLE_NAME + "(...)");
-            // db.execSQL("CREATE TABLE " + RECIPE_INGREDIENTS_TABLE_NAME + "(...)");
         } finally {
             db.close();
         }

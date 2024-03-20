@@ -41,6 +41,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     //assigning values to the views we created in the recycler_view_row layout file
         //based on the position of the recycler view
         holder.tvRecipeName.setText(recipeCardModels.get(position).getName());
+        //for future implementation of users adding their own image
         Bitmap image = recipeCardModels.get(position).getImage();
         if(image != null){
             holder.recipeImageView.setImageBitmap(image);

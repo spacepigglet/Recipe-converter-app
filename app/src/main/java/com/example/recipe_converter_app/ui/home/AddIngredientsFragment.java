@@ -15,7 +15,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.recipe_converter_app.R;
 import com.example.recipe_converter_app.databinding.FragmentAddIngredientsBinding;
-import com.example.recipe_converter_app.logic.Ingredient;
 import com.example.recipe_converter_app.logic.Unit;
 import com.example.recipe_converter_app.util.VibrationUtil;
 
@@ -27,11 +26,7 @@ public class AddIngredientsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-                //new ViewModelProvider(this).get(HomeViewModel.class);
         newRecipeViewModel = new ViewModelProvider(requireActivity()).get(NewRecipeViewModel.class);
-        /*viewModel.getFilteredList().observe(getViewLifecycleOwner(), list -> {
-            // Update the list UI.
-        });*/
 
         binding = FragmentAddIngredientsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -63,10 +58,13 @@ public class AddIngredientsFragment extends Fragment {
 
     private int getDefaultUnitPosition() {
         SharedPreferences sharedPref = getActivity().getPreferences(getContext().MODE_PRIVATE);
-        // Default to the ordinal value of Unit.GRAM if no preference is set
-        int defaultUnitPosition = sharedPref.getInt(getString(R.string.default_unit_position_key), Unit.GRAM.ordinal());
+        if(sharedPref != null){
+            // Default to the ordinal value of Unit.GRAM if no preference is set
+            int defaultUnitPosition = sharedPref.getInt(getString(R.string.default_unit_position_key), Unit.GRAM.ordinal());
 
-        return defaultUnitPosition;
+            return defaultUnitPosition;
+        }
+        return Unit.GRAM.ordinal();
     }
 
     private void addIngredient() {

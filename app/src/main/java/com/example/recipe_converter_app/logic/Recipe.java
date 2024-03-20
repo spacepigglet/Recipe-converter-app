@@ -13,6 +13,7 @@ public class Recipe {
     //private String description;
     private List<Ingredient> ingredients;
     private long id = 0;
+    //for future implementation of users adding their own image
     private Bitmap image ;
 
     public Recipe(String name) {

@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.recipe_converter_app.R;
 import com.example.recipe_converter_app.databinding.FragmentSettingsBinding;
@@ -21,11 +20,9 @@ import com.example.recipe_converter_app.logic.Unit;
 public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
-    SettingsViewModel settingsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        settingsViewModel = new ViewModelProvider(requireActivity()).get(SettingsViewModel.class);
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

@@ -3,7 +3,6 @@ package com.example.recipe_converter_app.ui.home;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.recipe_converter_app.logic.DatabaseHelper;
@@ -11,8 +10,6 @@ import com.example.recipe_converter_app.logic.Ingredient;
 import com.example.recipe_converter_app.logic.Recipe;
 import com.example.recipe_converter_app.logic.RecipeCalculator;
 import com.example.recipe_converter_app.logic.Unit;
-
-import java.util.ArrayList;
 
 public class NewRecipeViewModel extends ViewModel {
 
